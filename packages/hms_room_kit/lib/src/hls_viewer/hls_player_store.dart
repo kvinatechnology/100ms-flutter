@@ -47,7 +47,8 @@ class HLSPlayerStore extends ChangeNotifier
 
   ///This variable stores whether the chat is opened or not
   ///The initial value is taken from the [HMSRoomLayout.chatData]
-  bool isChatOpened = (HMSRoomLayout.chatData?.isOpenInitially ?? false) &&
+  bool isChatOpened =
+      (HMSRoomLayout.chatData?.isOpenInitially ?? false) &&
       (HMSRoomLayout.chatData?.isOverlay ?? false);
 
   ///This variable stores whether the timer is active or not
@@ -254,7 +255,8 @@ class HLSPlayerStore extends ChangeNotifier
 
     ///Here we are finding the layer with the same bitrate as the current layer
     var layerSelected = layerMap.entries.firstWhereIndexedOrNull(
-        (index, element) => (element.value.bitrate == layer?.bitrate));
+      (index, element) => (element.value.bitrate == layer?.bitrate),
+    );
 
     ///If the layer is found we set the selected layer to that layer
     if (layerSelected != null) {
@@ -278,7 +280,9 @@ class HLSPlayerStore extends ChangeNotifier
 
   @override
   void onHLSEventUpdate({required HMSHLSPlayerStats playerStats}) {
-    log("onHLSEventUpdate-> distanceFromLive: ${playerStats.distanceFromLive}ms buffered duration: ${playerStats.bufferedDuration}ms bitrate: ${playerStats.averageBitrate}");
+    log(
+      "onHLSEventUpdate-> distanceFromLive: ${playerStats.distanceFromLive}ms buffered duration: ${playerStats.bufferedDuration}ms bitrate: ${playerStats.averageBitrate}",
+    );
     isLive = playerStats.distanceFromLive < timeBeforeLive;
     timeFromLive = Duration(milliseconds: playerStats.distanceFromLive.toInt());
     hlsPlayerStats = playerStats;

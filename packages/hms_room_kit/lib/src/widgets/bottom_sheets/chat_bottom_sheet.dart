@@ -50,13 +50,15 @@ class _ChatBottomSheetState extends State<ChatBottomSheet> {
 
   void _scrollToEnd() {
     if (_scrollController.hasClients) {
-      WidgetsBinding.instance.addPostFrameCallback((_) =>
-          _scrollController.positions.isNotEmpty
-              ? _scrollController.animateTo(
-                  _scrollController.position.maxScrollExtent,
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.easeInOut)
-              : null);
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => _scrollController.positions.isNotEmpty
+            ? _scrollController.animateTo(
+                _scrollController.position.maxScrollExtent,
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeInOut,
+              )
+            : null,
+      );
     }
   }
 
@@ -89,7 +91,8 @@ class _ChatBottomSheetState extends State<ChatBottomSheet> {
     } else if (rolesName.contains(currentlySelectedValue)) {
       List<HMSRole> selectedRoles = [];
       selectedRoles.add(
-          hmsRoles.firstWhere((role) => role.name == currentlySelectedValue));
+        hmsRoles.firstWhere((role) => role.name == currentlySelectedValue),
+      );
       meetingStore.sendGroupMessage(message, selectedRoles);
     } else if (currentlySelectedpeerId != null &&
         meetingStore.localPeer!.peerId != currentlySelectedpeerId) {
@@ -123,67 +126,70 @@ class _ChatBottomSheetState extends State<ChatBottomSheet> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Selector<MeetingStore,
-                        Tuple4<List<HMSMessage>, int, List<dynamic>, int>>(
+                    const SizedBox(height: 15),
+                    Selector<
+                      MeetingStore,
+                      Tuple4<List<HMSMessage>, int, List<dynamic>, int>
+                    >(
                       selector: (_, meetingStore) => Tuple4(
-                          meetingStore.messages,
-                          meetingStore.messages.length,
-                          meetingStore.pinnedMessages,
-                          meetingStore.pinnedMessages.length),
+                        meetingStore.messages,
+                        meetingStore.messages.length,
+                        meetingStore.pinnedMessages,
+                        meetingStore.pinnedMessages.length,
+                      ),
                       builder: (context, data, _) {
                         _scrollToEnd();
                         return
+                        ///If there are no chats and no pinned messages
+                        (data.item2 == 0 && data.item3.isEmpty)
+                            ? Expanded(
+                                child: SingleChildScrollView(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  child: ConstrainedBox(
+                                    constraints: BoxConstraints(
+                                      minHeight:
+                                          MediaQuery.of(context).size.height *
+                                          0.5,
+                                    ),
+                                    child: const HMSEmptyChatWidget(),
+                                  ),
+                                ),
+                              )
+                            : Expanded(
+                                child: Column(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: const PinChatWidget(),
+                                    ),
 
-                            ///If there are no chats and no pinned messages
-                            (data.item2 == 0 && data.item3.isEmpty)
-                                ? Expanded(
-                                    child: SingleChildScrollView(
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        child: ConstrainedBox(
-                                            constraints: BoxConstraints(
-                                              minHeight: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.5,
+                                    /// List containing chats
+                                    Expanded(
+                                      flex: 3,
+                                      child: SingleChildScrollView(
+                                        reverse: true,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            ListView.builder(
+                                              controller: _scrollController,
+                                              shrinkWrap: true,
+                                              itemCount: data.item1.length,
+                                              itemBuilder: (_, index) {
+                                                return MessageContainer(
+                                                  isHLSChat: widget.isHLSChat,
+                                                  message: data.item1[index],
+                                                );
+                                              },
                                             ),
-                                            child: const HMSEmptyChatWidget())))
-                                : Expanded(
-                                    child: Column(children: [
-                                      Expanded(
-                                          flex: 1,
-                                          child: const PinChatWidget()),
-
-                                      /// List containing chats
-                                      Expanded(
-                                        flex: 3,
-                                        child: SingleChildScrollView(
-                                          reverse: true,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              ListView.builder(
-                                                  controller: _scrollController,
-                                                  shrinkWrap: true,
-                                                  itemCount: data.item1.length,
-                                                  itemBuilder: (_, index) {
-                                                    return MessageContainer(
-                                                      isHLSChat:
-                                                          widget.isHLSChat,
-                                                      message:
-                                                          data.item1[index],
-                                                    );
-                                                  }),
-                                            ],
-                                          ),
+                                          ],
                                         ),
-                                      )
-                                    ]),
-                                  );
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
                       },
                     ),
 
@@ -195,29 +201,35 @@ class _ChatBottomSheetState extends State<ChatBottomSheet> {
                         (HMSRoomLayout.chatData?.rolesWhitelist.isNotEmpty ??
                             false))
                       ReceipientSelectorChip(
-                          currentlySelectedValue: currentlySelectedValue,
-                          updateSelectedValue: _updateValueChoose),
+                        currentlySelectedValue: currentlySelectedValue,
+                        updateSelectedValue: _updateValueChoose,
+                      ),
 
                     ChatTextUtility(
-                        sendMessage: sendMessage, isHLSChat: widget.isHLSChat)
+                      sendMessage: sendMessage,
+                      isHLSChat: widget.isHLSChat,
+                    ),
                   ],
                 ),
               ),
               Selector<MeetingStore, Tuple2<List<HMSToastModel>, int>>(
-                  selector: (_, meetingStore) =>
-                      Tuple2(meetingStore.toasts, meetingStore.toasts.length),
-                  builder: (_, data, __) {
-                    int errorToastIndex = data.item1.indexWhere((element) =>
-                        element.hmsToastType == HMSToastsType.errorToast);
+                selector: (_, meetingStore) =>
+                    Tuple2(meetingStore.toasts, meetingStore.toasts.length),
+                builder: (_, data, __) {
+                  int errorToastIndex = data.item1.indexWhere(
+                    (element) =>
+                        element.hmsToastType == HMSToastsType.errorToast,
+                  );
 
-                    return (errorToastIndex != -1)
-                        ? HMSErrorToast(
-                            error: data.item1[errorToastIndex].toastData,
-                            meetingStore: context.read<MeetingStore>(),
-                            toastColor: HMSThemeColors.surfaceDefault,
-                          )
-                        : const SizedBox();
-                  })
+                  return (errorToastIndex != -1)
+                      ? HMSErrorToast(
+                          error: data.item1[errorToastIndex].toastData,
+                          meetingStore: context.read<MeetingStore>(),
+                          toastColor: HMSThemeColors.surfaceDefault,
+                        )
+                      : const SizedBox();
+                },
+              ),
             ],
           ),
         ),

@@ -17,11 +17,12 @@ class PreviewMeetingFlow extends StatefulWidget {
   final HMSPrebuiltOptions? prebuiltOptions;
   final HMSSDKInteractor hmsSDKInteractor;
   final String tokenData;
-  const PreviewMeetingFlow(
-      {super.key,
-      required this.prebuiltOptions,
-      required this.hmsSDKInteractor,
-      required this.tokenData});
+  const PreviewMeetingFlow({
+    super.key,
+    required this.prebuiltOptions,
+    required this.hmsSDKInteractor,
+    required this.tokenData,
+  });
 
   @override
   State<PreviewMeetingFlow> createState() => _PreviewMeetingFlowState();
@@ -42,7 +43,8 @@ class _PreviewMeetingFlowState extends State<PreviewMeetingFlow> {
   Widget build(BuildContext context) {
     return HMSRoomLayout.skipPreview
         ? MeetingScreenController(
-            user: widget.prebuiltOptions?.userName ??
+            user:
+                widget.prebuiltOptions?.userName ??
                 widget.prebuiltOptions?.userId ??
                 "",
             localPeerNetworkQuality: null,
@@ -56,6 +58,7 @@ class _PreviewMeetingFlowState extends State<PreviewMeetingFlow> {
               name: widget.prebuiltOptions?.userName ?? "",
               options: widget.prebuiltOptions,
               tokenData: widget.tokenData,
-            ));
+            ),
+          );
   }
 }

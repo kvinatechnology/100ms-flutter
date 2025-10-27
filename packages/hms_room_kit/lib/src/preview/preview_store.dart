@@ -72,7 +72,10 @@ class PreviewStore extends ChangeNotifier
         notifyListeners();
         peer = each;
         if (HMSRoomLayout
-                .roleLayoutData?.screens?.conferencing?.hlsLiveStreaming !=
+                .roleLayoutData
+                ?.screens
+                ?.conferencing
+                ?.hlsLiveStreaming !=
             null) {
           isHLSLink = true;
         }
@@ -103,18 +106,23 @@ class PreviewStore extends ChangeNotifier
     notifyListeners();
   }
 
-  void startPreview(
-      {required String userName, required String tokenData}) async {
+  void startPreview({
+    required String userName,
+    required String tokenData,
+  }) async {
     HMSConfig joinRoomConfig = HMSConfig(
-        authToken: tokenData,
-        userName: userName,
-        captureNetworkQualityInPreview: true,
-        // endPoint is only required by 100ms Team. Client developers should not use `endPoint`
-        //This is only for 100ms internal testing, endPoint can be safely removed from
-        //the HMSConfig for external usage
-        endPoint: Constant.initEndPoint);
+      authToken: tokenData,
+      userName: userName,
+      captureNetworkQualityInPreview: true,
+      // endPoint is only required by 100ms Team. Client developers should not use `endPoint`
+      //This is only for 100ms internal testing, endPoint can be safely removed from
+      //the HMSConfig for external usage
+      endPoint: Constant.initEndPoint,
+    );
     hmsSDKInteractor.startHMSLogger(
-        Constant.webRTCLogLevel, Constant.sdkLogLevel);
+      Constant.webRTCLogLevel,
+      Constant.sdkLogLevel,
+    );
     hmsSDKInteractor.addPreviewListener(this);
     hmsSDKInteractor.preview(config: joinRoomConfig);
   }
@@ -153,7 +161,9 @@ class PreviewStore extends ChangeNotifier
   @override
   void onRoomUpdate({required HMSRoom room, required HMSRoomUpdate update}) {
     this.room = room;
-    log("preview onRoomUpdate-> room: ${room.toString()} update: ${update.name} streamingState: ${room.hmshlsStreamingState?.state.name}");
+    log(
+      "preview onRoomUpdate-> room: ${room.toString()} update: ${update.name} streamingState: ${room.hmshlsStreamingState?.state.name}",
+    );
     switch (update) {
       case HMSRoomUpdate.browserRecordingStateUpdated:
         isRecordingStarted =
@@ -209,22 +219,26 @@ class PreviewStore extends ChangeNotifier
   }
 
   void checkNoiseCancellationAvailablility() async {
-    isNoiseCancellationAvailable =
-        await hmsSDKInteractor.isNoiseCancellationAvailable();
+    isNoiseCancellationAvailable = await hmsSDKInteractor
+        .isNoiseCancellationAvailable();
 
     ///Here we check if noise cancellation is available, if its available
     ///then we check if its enabled from dashboard in preview
     ///If yes we enable it.
     ///Else we check the noise cancellation status to update the UI
     if (isNoiseCancellationAvailable) {
-      if (HMSRoomLayout.roleLayoutData?.screens?.preview?.noiseCancellation
+      if (HMSRoomLayout
+              .roleLayoutData
+              ?.screens
+              ?.preview
+              ?.noiseCancellation
               ?.enabledByDefault ??
           false) {
         hmsSDKInteractor.enableNoiseCancellation();
         isNoiseCancellationEnabled = true;
       } else {
-        isNoiseCancellationEnabled =
-            await hmsSDKInteractor.isNoiseCancellationEnabled();
+        isNoiseCancellationEnabled = await hmsSDKInteractor
+            .isNoiseCancellationEnabled();
       }
     }
     notifyListeners();
@@ -312,13 +326,15 @@ class PreviewStore extends ChangeNotifier
   }
 
   @override
-  void onAudioDeviceChanged(
-      {HMSAudioDevice? currentAudioDevice,
-      List<HMSAudioDevice>? availableAudioDevice}) {
+  void onAudioDeviceChanged({
+    HMSAudioDevice? currentAudioDevice,
+    List<HMSAudioDevice>? availableAudioDevice,
+  }) {
     if (currentAudioDevice != null &&
         currentAudioOutputDevice != currentAudioDevice) {
       Utilities.showToast(
-          "Output Device changed to ${currentAudioDevice.name}");
+        "Output Device changed to ${currentAudioDevice.name}",
+      );
       currentAudioOutputDevice = currentAudioDevice;
     }
 
@@ -330,9 +346,12 @@ class PreviewStore extends ChangeNotifier
   }
 
   @override
-  void onPeerListUpdate(
-      {required List<HMSPeer> addedPeers,
-      required List<HMSPeer> removedPeers}) {
-    log("onPeerListUpdate -> addedPeers: $addedPeers removedPeers: $removedPeers");
+  void onPeerListUpdate({
+    required List<HMSPeer> addedPeers,
+    required List<HMSPeer> removedPeers,
+  }) {
+    log(
+      "onPeerListUpdate -> addedPeers: $addedPeers removedPeers: $removedPeers",
+    );
   }
 }

@@ -230,7 +230,8 @@ class _HomePageState extends State<HomePage> {
     if (widget.deepLinkURL == null && savedMeetingUrl.isNotEmpty) {
       meetingLinkController.text = savedMeetingUrl;
     } else {
-      meetingLinkController.text = widget.deepLinkURL ?? "https://hmsflutter.app.100ms.live/meeting/cte-xyht-skd";
+      meetingLinkController.text = widget.deepLinkURL ??
+          "https://hmsflutter.app.100ms.live/meeting/cte-xyht-skd";
     }
 
     int audioModeInt = await Utilities.getIntData(key: "audio-mode");
@@ -462,15 +463,15 @@ class _HomePageState extends State<HomePage> {
                               Expanded(
                                   child: ElevatedButton(
                                 style: ButtonStyle(
-                                    shadowColor: MaterialStateProperty.all(
+                                    shadowColor: WidgetStateProperty.all(
                                         themeSurfaceColor),
                                     backgroundColor:
                                         meetingLinkController.text.isEmpty
-                                            ? MaterialStateProperty.all(
+                                            ? WidgetStateProperty.all(
                                                 themeSurfaceColor)
-                                            : MaterialStateProperty.all(
+                                            : WidgetStateProperty.all(
                                                 hmsdefaultColor),
-                                    shape: MaterialStateProperty.all<
+                                    shape: WidgetStateProperty.all<
                                             RoundedRectangleBorder>(
                                         RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8.0),
@@ -543,11 +544,11 @@ class _HomePageState extends State<HomePage> {
                   width: width * 0.95,
                   child: ElevatedButton(
                     style: ButtonStyle(
-                        shadowColor: MaterialStateProperty.all(hmsdefaultColor),
+                        shadowColor: WidgetStateProperty.all(hmsdefaultColor),
                         backgroundColor:
-                            MaterialStateProperty.all(hmsdefaultColor),
+                            WidgetStateProperty.all(hmsdefaultColor),
                         shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                            WidgetStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ))),

@@ -16,11 +16,7 @@ class Theme {
   final bool? defaultTheme;
   final Map<String, String>? palette;
 
-  Theme({
-    this.name,
-    this.defaultTheme,
-    this.palette,
-  });
+  Theme({this.name, this.defaultTheme, this.palette});
 
   factory Theme.fromJson(Map<String, dynamic>? json) {
     if (json == null) {
@@ -38,19 +34,13 @@ class ScreenElements {
   final String? title;
   final String? subTitle;
 
-  ScreenElements({
-    this.title,
-    this.subTitle,
-  });
+  ScreenElements({this.title, this.subTitle});
 
   factory ScreenElements.fromJson(Map<String, dynamic>? json) {
     if (json == null) {
       return ScreenElements();
     }
-    return ScreenElements(
-      title: json['title'],
-      subTitle: json['sub_title'],
-    );
+    return ScreenElements(title: json['title'], subTitle: json['sub_title']);
   }
 }
 
@@ -72,23 +62,27 @@ class Preview {
   final NoiseCancellation? noiseCancellation;
   final bool? skipPreviewScreen;
 
-  Preview(
-      {this.previewHeader,
-      this.joinForm,
-      this.skipPreviewScreen = false,
-      this.noiseCancellation});
+  Preview({
+    this.previewHeader,
+    this.joinForm,
+    this.skipPreviewScreen = false,
+    this.noiseCancellation,
+  });
 
   factory Preview.fromJson(Map<String, dynamic>? json) {
     if (json == null) {
       return Preview();
     }
     return Preview(
-        previewHeader: ScreenElements.fromJson(
-            json['default']?['elements']?['preview_header']),
-        joinForm: JoinForm.fromJson(json['default']?['elements']?['join_form']),
-        skipPreviewScreen: json["skip_preview_screen"],
-        noiseCancellation: NoiseCancellation.fromJson(
-            json['default']?['elements']?['noise_cancellation']));
+      previewHeader: ScreenElements.fromJson(
+        json['default']?['elements']?['preview_header'],
+      ),
+      joinForm: JoinForm.fromJson(json['default']?['elements']?['join_form']),
+      skipPreviewScreen: json["skip_preview_screen"],
+      noiseCancellation: NoiseCancellation.fromJson(
+        json['default']?['elements']?['noise_cancellation'],
+      ),
+    );
   }
 }
 
@@ -119,10 +113,12 @@ class JoinForm {
       return JoinForm();
     } else {
       return JoinForm(
-          joinBtnType:
-              JoinButtonTypeValues.getButtonTypeFromName(json['join_btn_type']),
-          joinBtnLabel: json['join_btn_label'],
-          goLiveBtnLabel: json['go_live_btn_label']);
+        joinBtnType: JoinButtonTypeValues.getButtonTypeFromName(
+          json['join_btn_type'],
+        ),
+        joinBtnLabel: json['join_btn_label'],
+        goLiveBtnLabel: json['go_live_btn_label'],
+      );
     }
   }
 }
@@ -132,11 +128,7 @@ class Screens {
   final Conferencing? conferencing;
   final Map<String, dynamic>? leave;
 
-  Screens({
-    this.preview,
-    this.conferencing,
-    this.leave,
-  });
+  Screens({this.preview, this.conferencing, this.leave});
 
   factory Screens.fromJson(Map<String, dynamic>? json) {
     if (json == null) {
@@ -241,13 +233,16 @@ class HMSRoomLayout {
   static bool skipPreviewForRole = false;
   static bool skipPreview = false;
 
-  static Future<void> getRoomLayout(
-      {required HMSSDKInteractor hmsSDKInteractor,
-      required String authToken,
-      required String? endPoint,
-      String? roleName}) async {
+  static Future<void> getRoomLayout({
+    required HMSSDKInteractor hmsSDKInteractor,
+    required String authToken,
+    required String? endPoint,
+    String? roleName,
+  }) async {
     dynamic value = await hmsSDKInteractor.getRoomLayout(
-        authToken: authToken, endPoint: endPoint);
+      authToken: authToken,
+      endPoint: endPoint,
+    );
     if (value != null && value.runtimeType != HMSException) {
       _setLayout(layoutJson: jsonDecode(value));
       resetLayout(roleName);
@@ -256,8 +251,9 @@ class HMSRoomLayout {
 
   static void resetLayout(String? roleName) {
     if (roleName != null) {
-      int? roleIndex =
-          data?.indexWhere((layoutData) => layoutData.role == roleName);
+      int? roleIndex = data?.indexWhere(
+        (layoutData) => layoutData.role == roleName,
+      );
 
       ///Check if that role theme is present
       ///If not we assign the theme at 0th index
@@ -279,35 +275,81 @@ class HMSRoomLayout {
     if (peerType == PeerRoleType.conferencing) {
       chatData =
           roleLayoutData?.screens?.conferencing?.defaultConf?.elements?.chat;
-      isParticipantsListEnabled = roleLayoutData
-              ?.screens?.conferencing?.defaultConf?.elements?.participantList !=
+      isParticipantsListEnabled =
+          roleLayoutData
+              ?.screens
+              ?.conferencing
+              ?.defaultConf
+              ?.elements
+              ?.participantList !=
           null;
       isBRBEnabled =
           roleLayoutData?.screens?.conferencing?.defaultConf?.elements?.brb !=
-              null;
-      isHandRaiseEnabled = roleLayoutData
-              ?.screens?.conferencing?.defaultConf?.elements?.handRaise !=
           null;
-      offStageRoles = roleLayoutData?.screens?.conferencing?.defaultConf
-          ?.elements?.onStageExp?.offStageRoles;
-      skipPreviewForRole = roleLayoutData?.screens?.conferencing?.defaultConf
-              ?.elements?.onStageExp?.skipPreviewForRoleChange ??
+      isHandRaiseEnabled =
+          roleLayoutData
+              ?.screens
+              ?.conferencing
+              ?.defaultConf
+              ?.elements
+              ?.handRaise !=
+          null;
+      offStageRoles = roleLayoutData
+          ?.screens
+          ?.conferencing
+          ?.defaultConf
+          ?.elements
+          ?.onStageExp
+          ?.offStageRoles;
+      skipPreviewForRole =
+          roleLayoutData
+              ?.screens
+              ?.conferencing
+              ?.defaultConf
+              ?.elements
+              ?.onStageExp
+              ?.skipPreviewForRoleChange ??
           false;
     } else {
       chatData = roleLayoutData
-          ?.screens?.conferencing?.hlsLiveStreaming?.elements?.chat;
-      isParticipantsListEnabled = roleLayoutData?.screens?.conferencing
-              ?.hlsLiveStreaming?.elements?.participantList !=
+          ?.screens
+          ?.conferencing
+          ?.hlsLiveStreaming
+          ?.elements
+          ?.chat;
+      isParticipantsListEnabled =
+          roleLayoutData
+              ?.screens
+              ?.conferencing
+              ?.hlsLiveStreaming
+              ?.elements
+              ?.participantList !=
           null;
-      isBRBEnabled = roleLayoutData
-              ?.screens?.conferencing?.hlsLiveStreaming?.elements?.brb !=
+      isBRBEnabled =
+          roleLayoutData
+              ?.screens
+              ?.conferencing
+              ?.hlsLiveStreaming
+              ?.elements
+              ?.brb !=
           null;
-      isHandRaiseEnabled = roleLayoutData
-              ?.screens?.conferencing?.hlsLiveStreaming?.elements?.handRaise !=
+      isHandRaiseEnabled =
+          roleLayoutData
+              ?.screens
+              ?.conferencing
+              ?.hlsLiveStreaming
+              ?.elements
+              ?.handRaise !=
           null;
-      offStageRoles = roleLayoutData?.screens?.conferencing?.hlsLiveStreaming
-          ?.elements?.onStageExp?.offStageRoles;
-      skipPreviewForRole = roleLayoutData
+      offStageRoles = roleLayoutData
+          ?.screens
+          ?.conferencing
+          ?.hlsLiveStreaming
+          ?.elements
+          ?.onStageExp
+          ?.offStageRoles;
+      skipPreviewForRole =
+          roleLayoutData
               ?.screens
               ?.conferencing
               ?.hlsLiveStreaming
@@ -319,8 +361,9 @@ class HMSRoomLayout {
   }
 
   static void _setLayout({required Map<String, dynamic> layoutJson}) {
-    data = List<LayoutData>.from((layoutJson['data'] ?? [])
-        .map((appData) => LayoutData.fromJson(appData)));
+    data = List<LayoutData>.from(
+      (layoutJson['data'] ?? []).map((appData) => LayoutData.fromJson(appData)),
+    );
     limit = layoutJson['limit'].toString();
     last = layoutJson['last'];
   }

@@ -33,12 +33,13 @@ class ScreenController extends StatefulWidget {
   ///in addition to leaving the room when the leave room button is pressed
   final Function? onLeave;
 
-  const ScreenController(
-      {super.key,
-      required this.roomCode,
-      this.options,
-      this.onLeave,
-      this.authToken});
+  const ScreenController({
+    super.key,
+    required this.roomCode,
+    this.options,
+    this.onLeave,
+    this.authToken,
+  });
   @override
   State<ScreenController> createState() => _ScreenControllerState();
 }
@@ -82,8 +83,8 @@ class _ScreenControllerState extends State<ScreenController> {
         : null;
     Constant.layoutAPIEndPoint =
         (endPoints.containsKey(Constant.layoutAPIEndPointKey))
-            ? endPoints[Constant.layoutAPIEndPointKey]
-            : null;
+        ? endPoints[Constant.layoutAPIEndPointKey]
+        : null;
   }
 
   ///This function checks the permissions for the app
@@ -103,21 +104,25 @@ class _ScreenControllerState extends State<ScreenController> {
   ///If [getAuthTokenByRoomCode] fails it returns HMSException object
   ///else null
   Future<HMSException?> _getAuthTokenAndSetLayout(
-      HMSSDKInteractor hmssdkInteractor, String userName) async {
+    HMSSDKInteractor hmssdkInteractor,
+    String userName,
+  ) async {
     if (Constant.roomCode != null) {
       tokenData = await hmssdkInteractor.getAuthTokenByRoomCode(
-          userId: Constant.prebuiltOptions?.userId,
-          roomCode: Constant.roomCode!,
-          endPoint: Constant.tokenEndPoint);
+        userId: Constant.prebuiltOptions?.userId,
+        roomCode: Constant.roomCode!,
+        endPoint: Constant.tokenEndPoint,
+      );
     } else {
       tokenData = Constant.authToken;
     }
 
     if ((tokenData is String?) && tokenData != null) {
       await HMSRoomLayout.getRoomLayout(
-          hmsSDKInteractor: hmssdkInteractor,
-          authToken: tokenData,
-          endPoint: Constant.layoutAPIEndPoint);
+        hmsSDKInteractor: hmssdkInteractor,
+        authToken: tokenData,
+        endPoint: Constant.layoutAPIEndPoint,
+      );
       return null;
     } else {
       return tokenData;
@@ -140,32 +145,39 @@ class _ScreenControllerState extends State<ScreenController> {
     }
 
     _hmsSDKInteractor = HMSSDKInteractor(
-        iOSScreenshareConfig: widget.options?.iOSScreenshareConfig,
-        joinWithMutedAudio: true,
-        joinWithMutedVideo: true,
-        isSoftwareDecoderDisabled: AppDebugConfig.isSoftwareDecoderDisabled,
-        isAudioMixerDisabled: AppDebugConfig.isAudioMixerDisabled,
-        isNoiseCancellationEnabled:
-            widget.options?.enableNoiseCancellation ?? false,
-        isAutomaticGainControlEnabled:
-            widget.options?.isAutomaticGainControlEnabled ?? false,
-        isNoiseSuppressionEnabled:
-            widget.options?.isNoiseSuppressionEnabled ?? false,
-        isPrebuilt: true);
+      iOSScreenshareConfig: widget.options?.iOSScreenshareConfig,
+      joinWithMutedAudio: true,
+      joinWithMutedVideo: true,
+      isSoftwareDecoderDisabled: AppDebugConfig.isSoftwareDecoderDisabled,
+      isAudioMixerDisabled: AppDebugConfig.isAudioMixerDisabled,
+      isNoiseCancellationEnabled:
+          widget.options?.enableNoiseCancellation ?? false,
+      isAutomaticGainControlEnabled:
+          widget.options?.isAutomaticGainControlEnabled ?? false,
+      isNoiseSuppressionEnabled:
+          widget.options?.isNoiseSuppressionEnabled ?? false,
+      isPrebuilt: true,
+    );
     await _hmsSDKInteractor.build();
 
     var ans = await _getAuthTokenAndSetLayout(
-        _hmsSDKInteractor, widget.options?.userName ?? "");
+      _hmsSDKInteractor,
+      widget.options?.userName ?? "",
+    );
 
     ///If fetching auth token fails then we show the error dialog
     ///with the error message and description
     if (ans != null && mounted) {
       showGeneralDialog(
-          context: context,
-          pageBuilder: (_, data, __) {
-            return UtilityComponents.showFailureError(ans, context,
-                () => Navigator.of(context).popUntil((route) => route.isFirst));
-          });
+        context: context,
+        pageBuilder: (_, data, __) {
+          return UtilityComponents.showFailureError(
+            ans,
+            context,
+            () => Navigator.of(context).popUntil((route) => route.isFirst),
+          );
+        },
+      );
     } else {
       Constant.debugMode = AppDebugConfig.isDebugMode;
       if (mounted) {
@@ -198,14 +210,15 @@ class _ScreenControllerState extends State<ScreenController> {
               ),
             )
           : isPermissionGranted
-              ? PreviewMeetingFlow(
-                  prebuiltOptions: widget.options,
-                  hmsSDKInteractor: _hmsSDKInteractor,
-                  tokenData: tokenData,
-                )
-              : PreviewPermissions(
-                  options: widget.options,
-                  callback: _isPermissionGrantedCallback),
+          ? PreviewMeetingFlow(
+              prebuiltOptions: widget.options,
+              hmsSDKInteractor: _hmsSDKInteractor,
+              tokenData: tokenData,
+            )
+          : PreviewPermissions(
+              options: widget.options,
+              callback: _isPermissionGrantedCallback,
+            ),
     );
   }
 }

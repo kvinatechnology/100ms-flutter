@@ -15,8 +15,9 @@ class Conferencing {
       hlsLiveStreaming = null;
       return;
     }
-    defaultConf =
-        json.containsKey('default') ? Default.fromJson(json['default']) : null;
+    defaultConf = json.containsKey('default')
+        ? Default.fromJson(json['default'])
+        : null;
     hlsLiveStreaming = json.containsKey('hls_live_streaming')
         ? HlsLiveStreaming.fromJson(json['hls_live_streaming'])
         : null;
@@ -116,16 +117,17 @@ class Elements {
   Map<String, dynamic>? brb;
   Map<String, dynamic>? handRaise;
   NoiseCancellation? noiseCancellation;
-  Elements(
-      {this.header,
-      this.chat,
-      this.participantList,
-      this.videoTileLayout,
-      this.emojiReactions,
-      this.onStageExp,
-      this.brb,
-      this.handRaise,
-      this.noiseCancellation});
+  Elements({
+    this.header,
+    this.chat,
+    this.participantList,
+    this.videoTileLayout,
+    this.emojiReactions,
+    this.onStageExp,
+    this.brb,
+    this.handRaise,
+    this.noiseCancellation,
+  });
 
   Elements.fromJson(Map<String, dynamic>? json) {
     if (json == null) {
@@ -209,8 +211,8 @@ class OnStageExp {
     onStageRole = json['on_stage_role'];
     offStageRoles =
         json.containsKey('off_stage_roles') && json['off_stage_roles'] is List
-            ? List<String>.from(json['off_stage_roles'])
-            : null;
+        ? List<String>.from(json['off_stage_roles'])
+        : null;
     skipPreviewForRoleChange = json.containsKey('skip_preview_for_role_change')
         ? json['skip_preview_for_role_change']
         : null;
@@ -250,8 +252,8 @@ class VideoTileLayout {
     enableLocalTileInset = json['enable_local_tile_inset'];
     prominentRoles =
         json.containsKey('prominent_roles') && json['prominent_roles'] is List
-            ? List<String>.from(json['prominent_roles'])
-            : null;
+        ? List<String>.from(json['prominent_roles'])
+        : null;
     enableSpotlightingPeer = json['enable_spotlighting_peer'];
   }
 
@@ -277,15 +279,16 @@ class Chat {
   List<String> rolesWhitelist = [];
   RealTimeControls? realTimeControls;
 
-  Chat(
-      {this.isOpenInitially,
-      this.isOverlay,
-      this.allowPinningMessages,
-      this.chatTitle,
-      this.messagePlaceholder,
-      this.isPrivateChatEnabled,
-      this.isPublicChatEnabled,
-      this.rolesWhitelist = const []});
+  Chat({
+    this.isOpenInitially,
+    this.isOverlay,
+    this.allowPinningMessages,
+    this.chatTitle,
+    this.messagePlaceholder,
+    this.isPrivateChatEnabled,
+    this.isPublicChatEnabled,
+    this.rolesWhitelist = const [],
+  });
 
   Chat.fromJson(Map<String, dynamic>? json) {
     if (json == null) {
@@ -302,8 +305,8 @@ class Chat {
     }
     isOpenInitially = json.containsKey('initial_state')
         ? json['initial_state'].contains("CHAT_STATE_OPEN")
-            ? true
-            : false
+              ? true
+              : false
         : null;
     isOverlay = json.containsKey('is_overlay') ? json['is_overlay'] : null;
     allowPinningMessages = json.containsKey('allow_pinning_messages')
@@ -321,8 +324,8 @@ class Chat {
         : false;
     rolesWhitelist =
         json.containsKey('roles_whitelist') && json['roles_whitelist'] is List
-            ? List<String>.from(json['roles_whitelist'])
-            : [];
+        ? List<String>.from(json['roles_whitelist'])
+        : [];
     realTimeControls = json.containsKey('real_time_controls')
         ? RealTimeControls.fromJson(json['real_time_controls'])
         : null;
@@ -366,8 +369,11 @@ class RealTimeControls {
   bool? canDisableChat;
   bool? canHideMessage;
 
-  RealTimeControls(
-      {this.canBlockUser, this.canDisableChat, this.canHideMessage});
+  RealTimeControls({
+    this.canBlockUser,
+    this.canDisableChat,
+    this.canHideMessage,
+  });
 
   RealTimeControls.fromJson(Map<String, dynamic>? json) {
     if (json == null) {
@@ -376,12 +382,15 @@ class RealTimeControls {
       canHideMessage = null;
       return;
     }
-    canBlockUser =
-        json.containsKey("can_block_user") ? json["can_block_user"] : false;
-    canDisableChat =
-        json.containsKey("can_disable_chat") ? json["can_disable_chat"] : false;
-    canHideMessage =
-        json.containsKey("can_hide_message") ? json["can_hide_message"] : false;
+    canBlockUser = json.containsKey("can_block_user")
+        ? json["can_block_user"]
+        : false;
+    canDisableChat = json.containsKey("can_disable_chat")
+        ? json["can_disable_chat"]
+        : false;
+    canHideMessage = json.containsKey("can_hide_message")
+        ? json["can_hide_message"]
+        : false;
   }
 
   Map<String, dynamic> toJson() {

@@ -14,13 +14,14 @@ class MoreOptionItem extends StatelessWidget {
   final String optionText;
   final bool isActive;
   final Color? optionTextColor;
-  const MoreOptionItem(
-      {super.key,
-      required this.onTap,
-      required this.optionIcon,
-      required this.optionText,
-      this.isActive = false,
-      this.optionTextColor});
+  const MoreOptionItem({
+    super.key,
+    required this.onTap,
+    required this.optionIcon,
+    required this.optionText,
+    this.isActive = false,
+    this.optionTextColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +31,11 @@ class MoreOptionItem extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-            color: isActive
-                ? HMSThemeColors.surfaceBright
-                : HMSThemeColors.surfaceDim,
-            borderRadius: BorderRadius.circular(4)),
+          color: isActive
+              ? HMSThemeColors.surfaceBright
+              : HMSThemeColors.surfaceDim,
+          borderRadius: BorderRadius.circular(4),
+        ),
         height: 64,
         width: 109,
         child: Column(

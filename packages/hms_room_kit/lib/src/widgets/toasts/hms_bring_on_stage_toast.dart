@@ -29,24 +29,43 @@ class HMSBringOnStageToast extends StatelessWidget {
   final Color? toastColor;
   final double? toastPosition;
 
-  const HMSBringOnStageToast(
-      {super.key,
-      required this.peer,
-      required this.meetingStore,
-      this.toastColor,
-      this.toastPosition});
+  const HMSBringOnStageToast({
+    super.key,
+    required this.peer,
+    required this.meetingStore,
+    this.toastColor,
+    this.toastPosition,
+  });
 
   String? _getButtonText() {
     if (HMSRoomLayout.peerType == PeerRoleType.conferencing) {
-      if (HMSRoomLayout.roleLayoutData?.screens?.conferencing?.defaultConf
-              ?.elements?.onStageExp?.offStageRoles
+      if (HMSRoomLayout
+              .roleLayoutData
+              ?.screens
+              ?.conferencing
+              ?.defaultConf
+              ?.elements
+              ?.onStageExp
+              ?.offStageRoles
               ?.contains(peer.role.name) ??
           false) {
-        return HMSRoomLayout.roleLayoutData?.screens?.conferencing?.defaultConf
-            ?.elements?.onStageExp?.bringToStageLabel;
+        return HMSRoomLayout
+            .roleLayoutData
+            ?.screens
+            ?.conferencing
+            ?.defaultConf
+            ?.elements
+            ?.onStageExp
+            ?.bringToStageLabel;
       } else {
-        return HMSRoomLayout.roleLayoutData?.screens?.conferencing
-            ?.hlsLiveStreaming?.elements?.onStageExp?.bringToStageLabel;
+        return HMSRoomLayout
+            .roleLayoutData
+            ?.screens
+            ?.conferencing
+            ?.hlsLiveStreaming
+            ?.elements
+            ?.onStageExp
+            ?.bringToStageLabel;
       }
     }
     return null;
@@ -62,7 +81,9 @@ class HMSBringOnStageToast extends StatelessWidget {
         height: 24,
         width: 24,
         colorFilter: ColorFilter.mode(
-            HMSThemeColors.onSurfaceHighEmphasis, BlendMode.srcIn),
+          HMSThemeColors.onSurfaceHighEmphasis,
+          BlendMode.srcIn,
+        ),
       ),
       subtitle: SizedBox(
         width: MediaQuery.of(context).size.width * 0.32,

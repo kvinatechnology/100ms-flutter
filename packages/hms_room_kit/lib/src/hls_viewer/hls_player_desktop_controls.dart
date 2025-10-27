@@ -11,7 +11,7 @@ import 'package:hms_room_kit/src/widgets/bottom_sheets/chat_bottom_sheet.dart';
 class HLSPlayerDesktopControls extends StatefulWidget {
   final Orientation orientation;
   const HLSPlayerDesktopControls({Key? key, required this.orientation})
-      : super(key: key);
+    : super(key: key);
 
   @override
   State<HLSPlayerDesktopControls> createState() =>
@@ -36,18 +36,18 @@ class _HLSPlayerDesktopControlsState extends State<HLSPlayerDesktopControls> {
         widget.orientation == Orientation.portrait
             ? HLSStreamDescription(
                 showDescription: showDescription,
-                toggleDescription: toggleDescription)
+                toggleDescription: toggleDescription,
+              )
             : const SizedBox(),
 
         ///Renders Chat Bottom Sheet only if the description is not visible
         if (!showDescription)
           Expanded(
-              child: Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: const ChatBottomSheet(
-              isHLSChat: true,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: const ChatBottomSheet(isHLSChat: true),
             ),
-          ))
+          ),
       ],
     );
   }

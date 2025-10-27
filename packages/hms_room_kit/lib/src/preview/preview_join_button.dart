@@ -15,15 +15,19 @@ class PreviewJoinButton extends StatelessWidget {
   final PreviewStore previewStore;
   final bool isEmpty;
 
-  const PreviewJoinButton(
-      {super.key, required this.previewStore, required this.isEmpty});
+  const PreviewJoinButton({
+    super.key,
+    required this.previewStore,
+    required this.isEmpty,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 48,
       decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(8))),
+        borderRadius: BorderRadius.all(Radius.circular(8)),
+      ),
 
       ///If the join button type is `join and go live` and the HLS streaming is not started
       ///we show the go live button
@@ -31,11 +35,15 @@ class PreviewJoinButton extends StatelessWidget {
       ///If the join button type is `join and go live` and the HLS streaming is started
       ///we show the join now button
       ///If the join button type is `join now`, we show the join now button
-      child: HMSRoomLayout.roleLayoutData?.screens?.preview?.joinForm
+      child:
+          HMSRoomLayout
+                      .roleLayoutData
+                      ?.screens
+                      ?.preview
+                      ?.joinForm
                       ?.joinBtnType ==
                   JoinButtonType.JOIN_BTN_TYPE_JOIN_AND_GO_LIVE &&
               !previewStore.isHLSStreamingStarted
-
           ///If the room join is in progress we show the loading indicator
           ///If the room join is not in progress we show the go live button
           ? Row(
@@ -46,28 +54,37 @@ class PreviewJoinButton extends StatelessWidget {
                   height: 24,
                   width: 24,
                   colorFilter: ColorFilter.mode(
-                      isEmpty
-                          ? HMSThemeColors.onPrimaryLowEmphasis
-                          : HMSThemeColors.onPrimaryHighEmphasis,
-                      BlendMode.srcIn),
+                    isEmpty
+                        ? HMSThemeColors.onPrimaryLowEmphasis
+                        : HMSThemeColors.onPrimaryHighEmphasis,
+                    BlendMode.srcIn,
+                  ),
                 ),
-                const SizedBox(
-                  width: 8,
-                ),
+                const SizedBox(width: 8),
                 HMSTitleText(
-                  text: HMSRoomLayout.roleLayoutData?.screens?.preview?.joinForm
+                  text:
+                      HMSRoomLayout
+                          .roleLayoutData
+                          ?.screens
+                          ?.preview
+                          ?.joinForm
                           ?.goLiveBtnLabel ??
                       'Go Live',
                   textColor: isEmpty
                       ? HMSThemeColors.onPrimaryLowEmphasis
                       : HMSThemeColors.onPrimaryHighEmphasis,
-                )
+                ),
               ],
             )
           : Center(
               child: HMSTitleText(
-                text: HMSRoomLayout
-                        .data?[0].screens?.preview?.joinForm?.joinBtnLabel ??
+                text:
+                    HMSRoomLayout
+                        .data?[0]
+                        .screens
+                        ?.preview
+                        ?.joinForm
+                        ?.joinBtnLabel ??
                     'Join Now',
                 textColor: isEmpty
                     ? HMSThemeColors.onPrimaryLowEmphasis

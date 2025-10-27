@@ -54,11 +54,11 @@ class _AppUtilitiesBottomSheetState extends State<AppUtilitiesBottomSheet> {
     ///In other cases we return high emphasis color
     return meetingStore.isWhiteboardEnabled
         ? meetingStore.whiteboardModel?.isOwner ?? false
-            ? HMSThemeColors.onSurfaceHighEmphasis
-            : HMSThemeColors.onSurfaceLowEmphasis
+              ? HMSThemeColors.onSurfaceHighEmphasis
+              : HMSThemeColors.onSurfaceLowEmphasis
         : meetingStore.screenShareCount > 0 || meetingStore.isScreenShareOn
-            ? HMSThemeColors.onSurfaceLowEmphasis
-            : HMSThemeColors.onSurfaceHighEmphasis;
+        ? HMSThemeColors.onSurfaceLowEmphasis
+        : HMSThemeColors.onSurfaceHighEmphasis;
   }
 
   bool getTranscriptionPermission(MeetingStore meetingStore) {
@@ -75,42 +75,41 @@ class _AppUtilitiesBottomSheetState extends State<AppUtilitiesBottomSheet> {
     MeetingStore meetingStore = context.read<MeetingStore>();
     return Padding(
       padding: EdgeInsets.only(
-          top: 16.0,
-          left: MediaQuery.of(context).size.width * 0.04,
-          right: MediaQuery.of(context).size.width * 0.04,
-          bottom: 24),
+        top: 16.0,
+        left: MediaQuery.of(context).size.width * 0.04,
+        right: MediaQuery.of(context).size.width * 0.04,
+        bottom: 24,
+      ),
       child: SingleChildScrollView(
         child: Column(
           children: [
             ///This renders the title and close button
-            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      HMSTitleText(
-                        text: "Options",
-                        textColor: HMSThemeColors.onSurfaceHighEmphasis,
-                        letterSpacing: 0.15,
-                      )
-                    ],
-                  ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      HMSCrossButton(),
-                    ],
-                  )
-                ],
-              ),
-            ]),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        HMSTitleText(
+                          text: "Options",
+                          textColor: HMSThemeColors.onSurfaceHighEmphasis,
+                          letterSpacing: 0.15,
+                        ),
+                      ],
+                    ),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [HMSCrossButton()],
+                    ),
+                  ],
+                ),
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 16, bottom: 16),
-              child: Divider(
-                color: HMSThemeColors.borderDefault,
-                height: 5,
-              ),
+              child: Divider(color: HMSThemeColors.borderDefault, height: 5),
             ),
 
             ///This renders the participants, screen share, brb, raise hand and recording options
@@ -121,60 +120,60 @@ class _AppUtilitiesBottomSheetState extends State<AppUtilitiesBottomSheet> {
                 ///This renders the participants option if participants list is enabled
                 if (HMSRoomLayout.isParticipantsListEnabled)
                   MoreOptionItem(
-                      onTap: () async {
-                        Navigator.pop(context);
-                        showModalBottomSheet(
-                          isScrollControlled: true,
-                          backgroundColor: HMSThemeColors.surfaceDim,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          context: context,
-                          builder: (ctx) => ChangeNotifierProvider.value(
-                              value: meetingStore,
-                              child: (HMSRoomLayout.chatData == null ||
-                                      (HMSRoomLayout.chatData?.isOverlay ??
-                                          true))
-                                  ? const OverlayParticipantsBottomSheet()
-                                  : const ChatParticipantsTabBar(
-                                      tabIndex: 1,
-                                    )),
-                        );
-                      },
-                      optionIcon: badge.Badge(
-                        badgeStyle: badge.BadgeStyle(
-                          badgeColor: HMSThemeColors.surfaceDefault,
+                    onTap: () async {
+                      Navigator.pop(context);
+                      showModalBottomSheet(
+                        isScrollControlled: true,
+                        backgroundColor: HMSThemeColors.surfaceDim,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        badgeContent: HMSTitleText(
-                          text: Utilities.formatNumber(
-                              context.read<MeetingStore>().peersInRoom),
-                          textColor: HMSThemeColors.onSurfaceHighEmphasis,
-                          fontSize: 10,
-                          lineHeight: 16,
-                          letterSpacing: 1.5,
+                        context: context,
+                        builder: (ctx) => ChangeNotifierProvider.value(
+                          value: meetingStore,
+                          child:
+                              (HMSRoomLayout.chatData == null ||
+                                  (HMSRoomLayout.chatData?.isOverlay ?? true))
+                              ? const OverlayParticipantsBottomSheet()
+                              : const ChatParticipantsTabBar(tabIndex: 1),
                         ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: context
-                                          .read<MeetingStore>()
-                                          .peersInRoom <
-                                      1000
-                                  ? 15
-                                  : context.read<MeetingStore>().peersInRoom <
-                                          10000
-                                      ? 20
-                                      : 30),
-                          child: SvgPicture.asset(
-                            "packages/hms_room_kit/lib/src/assets/icons/participants.svg",
-                            height: 20,
-                            width: 20,
-                            colorFilter: ColorFilter.mode(
-                                HMSThemeColors.onSurfaceHighEmphasis,
-                                BlendMode.srcIn),
+                      );
+                    },
+                    optionIcon: badge.Badge(
+                      badgeStyle: badge.BadgeStyle(
+                        badgeColor: HMSThemeColors.surfaceDefault,
+                      ),
+                      badgeContent: HMSTitleText(
+                        text: Utilities.formatNumber(
+                          context.read<MeetingStore>().peersInRoom,
+                        ),
+                        textColor: HMSThemeColors.onSurfaceHighEmphasis,
+                        fontSize: 10,
+                        lineHeight: 16,
+                        letterSpacing: 1.5,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal:
+                              context.read<MeetingStore>().peersInRoom < 1000
+                              ? 15
+                              : context.read<MeetingStore>().peersInRoom < 10000
+                              ? 20
+                              : 30,
+                        ),
+                        child: SvgPicture.asset(
+                          "packages/hms_room_kit/lib/src/assets/icons/participants.svg",
+                          height: 20,
+                          width: 20,
+                          colorFilter: ColorFilter.mode(
+                            HMSThemeColors.onSurfaceHighEmphasis,
+                            BlendMode.srcIn,
                           ),
                         ),
                       ),
-                      optionText: "Participants"),
+                    ),
+                    optionText: "Participants",
+                  ),
 
                 ///This renders the screen share option
                 if (meetingStore.localPeer?.role.publishSettings?.allowed
@@ -195,8 +194,9 @@ class _AppUtilitiesBottomSheetState extends State<AppUtilitiesBottomSheet> {
                       height: 20,
                       width: 20,
                       colorFilter: ColorFilter.mode(
-                          HMSThemeColors.onSurfaceHighEmphasis,
-                          BlendMode.srcIn),
+                        HMSThemeColors.onSurfaceHighEmphasis,
+                        BlendMode.srcIn,
+                      ),
                     ),
                     optionText: meetingStore.isScreenShareOn
                         ? "Sharing Screen"
@@ -206,42 +206,47 @@ class _AppUtilitiesBottomSheetState extends State<AppUtilitiesBottomSheet> {
                 ///This renders the brb option
                 if (HMSRoomLayout.isBRBEnabled)
                   MoreOptionItem(
-                      onTap: () async {
-                        meetingStore.changeMetadataBRB();
-                        Navigator.pop(context);
-                      },
-                      isActive: meetingStore.isBRB,
-                      optionIcon: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: SvgPicture.asset(
-                          "packages/hms_room_kit/lib/src/assets/icons/brb.svg",
-                          colorFilter: ColorFilter.mode(
-                              HMSThemeColors.onSurfaceHighEmphasis,
-                              BlendMode.srcIn),
+                    onTap: () async {
+                      meetingStore.changeMetadataBRB();
+                      Navigator.pop(context);
+                    },
+                    isActive: meetingStore.isBRB,
+                    optionIcon: Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: SvgPicture.asset(
+                        "packages/hms_room_kit/lib/src/assets/icons/brb.svg",
+                        colorFilter: ColorFilter.mode(
+                          HMSThemeColors.onSurfaceHighEmphasis,
+                          BlendMode.srcIn,
                         ),
                       ),
-                      optionText:
-                          meetingStore.isBRB ? "I'm Back" : "Be Right Back"),
+                    ),
+                    optionText: meetingStore.isBRB
+                        ? "I'm Back"
+                        : "Be Right Back",
+                  ),
 
                 ///This renders the raise hand option
                 if (HMSRoomLayout.isHandRaiseEnabled)
                   MoreOptionItem(
-                      onTap: () async {
-                        context.read<MeetingStore>().toggleLocalPeerHandRaise();
-                        Navigator.pop(context);
-                      },
-                      isActive: meetingStore.isRaisedHand,
-                      optionIcon: SvgPicture.asset(
-                        "packages/hms_room_kit/lib/src/assets/icons/hand_outline.svg",
-                        height: 20,
-                        width: 20,
-                        colorFilter: ColorFilter.mode(
-                            HMSThemeColors.onSurfaceHighEmphasis,
-                            BlendMode.srcIn),
+                    onTap: () async {
+                      context.read<MeetingStore>().toggleLocalPeerHandRaise();
+                      Navigator.pop(context);
+                    },
+                    isActive: meetingStore.isRaisedHand,
+                    optionIcon: SvgPicture.asset(
+                      "packages/hms_room_kit/lib/src/assets/icons/hand_outline.svg",
+                      height: 20,
+                      width: 20,
+                      colorFilter: ColorFilter.mode(
+                        HMSThemeColors.onSurfaceHighEmphasis,
+                        BlendMode.srcIn,
                       ),
-                      optionText: meetingStore.isRaisedHand
-                          ? "Lower Hand"
-                          : "Raise Hand"),
+                    ),
+                    optionText: meetingStore.isRaisedHand
+                        ? "Lower Hand"
+                        : "Raise Hand",
+                  ),
 
                 ///This renders the polls and quizzes option
                 if ((meetingStore.localPeer?.role.permissions.pollRead ??
@@ -249,32 +254,36 @@ class _AppUtilitiesBottomSheetState extends State<AppUtilitiesBottomSheet> {
                     (meetingStore.localPeer?.role.permissions.pollWrite ??
                         false))
                   MoreOptionItem(
-                      onTap: () {
-                        meetingStore.fetchPollList(HMSPollState.created);
-                        Navigator.pop(context);
-                        showModalBottomSheet(
-                          isScrollControlled: true,
-                          backgroundColor: HMSThemeColors.surfaceDim,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(16),
-                                topRight: Radius.circular(16)),
+                    onTap: () {
+                      meetingStore.fetchPollList(HMSPollState.created);
+                      Navigator.pop(context);
+                      showModalBottomSheet(
+                        isScrollControlled: true,
+                        backgroundColor: HMSThemeColors.surfaceDim,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(16),
+                            topRight: Radius.circular(16),
                           ),
-                          context: context,
-                          builder: (ctx) => ChangeNotifierProvider.value(
-                              value: meetingStore,
-                              child: const PollAndQuizBottomSheet()),
-                        );
-                      },
-                      optionIcon: SvgPicture.asset(
-                        "packages/hms_room_kit/lib/src/assets/icons/polls.svg",
-                        height: 20,
-                        width: 20,
-                        colorFilter: ColorFilter.mode(
-                            HMSThemeColors.onSurfaceHighEmphasis,
-                            BlendMode.srcIn),
+                        ),
+                        context: context,
+                        builder: (ctx) => ChangeNotifierProvider.value(
+                          value: meetingStore,
+                          child: const PollAndQuizBottomSheet(),
+                        ),
+                      );
+                    },
+                    optionIcon: SvgPicture.asset(
+                      "packages/hms_room_kit/lib/src/assets/icons/polls.svg",
+                      height: 20,
+                      width: 20,
+                      colorFilter: ColorFilter.mode(
+                        HMSThemeColors.onSurfaceHighEmphasis,
+                        BlendMode.srcIn,
                       ),
-                      optionText: "Polls and Quizzes"),
+                    ),
+                    optionText: "Polls and Quizzes",
+                  ),
 
                 ///This renders the recording option
                 ///This option is only rendered if the local peer has the permission to
@@ -285,7 +294,6 @@ class _AppUtilitiesBottomSheetState extends State<AppUtilitiesBottomSheet> {
                 ///If Streaming is already running we disable the recording option
                 if (meetingStore.localPeer?.role.permissions.browserRecording ??
                     false)
-
                   ///If streaming is on or in initialising state disable the button
                   ((meetingStore.streamingType["hls"] ==
                               HMSStreamingState.started) ||
@@ -301,8 +309,9 @@ class _AppUtilitiesBottomSheetState extends State<AppUtilitiesBottomSheet> {
                             height: 20,
                             width: 20,
                             colorFilter: ColorFilter.mode(
-                                HMSThemeColors.onSurfaceLowEmphasis,
-                                BlendMode.srcIn),
+                              HMSThemeColors.onSurfaceLowEmphasis,
+                              BlendMode.srcIn,
+                            ),
                           ),
                           optionText: "Record",
                           optionTextColor: HMSThemeColors.onSurfaceLowEmphasis,
@@ -311,13 +320,13 @@ class _AppUtilitiesBottomSheetState extends State<AppUtilitiesBottomSheet> {
                           onTap: () async {
                             bool isRecordingRunning =
                                 ((meetingStore.recordingType["hls"] ==
-                                            HMSRecordingState.started) ||
-                                        meetingStore.recordingType["hls"] ==
-                                            HMSRecordingState.resumed) ||
-                                    (meetingStore.recordingType["browser"] ==
-                                            HMSRecordingState.started ||
-                                        meetingStore.recordingType["browser"] ==
-                                            HMSRecordingState.resumed);
+                                        HMSRecordingState.started) ||
+                                    meetingStore.recordingType["hls"] ==
+                                        HMSRecordingState.resumed) ||
+                                (meetingStore.recordingType["browser"] ==
+                                        HMSRecordingState.started ||
+                                    meetingStore.recordingType["browser"] ==
+                                        HMSRecordingState.resumed);
                             if (isRecordingRunning) {
                               Navigator.pop(context);
                               showModalBottomSheet(
@@ -325,8 +334,9 @@ class _AppUtilitiesBottomSheetState extends State<AppUtilitiesBottomSheet> {
                                 backgroundColor: HMSThemeColors.surfaceDim,
                                 shape: const RoundedRectangleBorder(
                                   borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(16),
-                                      topRight: Radius.circular(16)),
+                                    topLeft: Radius.circular(16),
+                                    topRight: Radius.circular(16),
+                                  ),
                                 ),
                                 context: context,
                                 builder: (ctx) => ChangeNotifierProvider.value(
@@ -346,8 +356,9 @@ class _AppUtilitiesBottomSheetState extends State<AppUtilitiesBottomSheet> {
                                       height: 20,
                                       width: 20,
                                       colorFilter: ColorFilter.mode(
-                                          HMSThemeColors.alertErrorDefault,
-                                          BlendMode.srcIn),
+                                        HMSThemeColors.alertErrorDefault,
+                                        BlendMode.srcIn,
+                                      ),
                                     ),
                                     subTitle: HMSSubheadingText(
                                       text:
@@ -363,9 +374,10 @@ class _AppUtilitiesBottomSheetState extends State<AppUtilitiesBottomSheet> {
                             } else {
                               Navigator.pop(context);
                               meetingStore.startRtmpOrRecording(
-                                  meetingUrl: Constant.streamingUrl,
-                                  toRecord: true,
-                                  rtmpUrls: null);
+                                meetingUrl: Constant.streamingUrl,
+                                toRecord: true,
+                                rtmpUrls: null,
+                              );
                             }
                           },
                           isActive: false,
@@ -374,64 +386,74 @@ class _AppUtilitiesBottomSheetState extends State<AppUtilitiesBottomSheet> {
                             height: 20,
                             width: 20,
                             colorFilter: ColorFilter.mode(
-                                meetingStore.recordingType["browser"] ==
-                                        HMSRecordingState.started
-                                    ? HMSThemeColors.alertErrorDefault
-                                    : HMSThemeColors.onSurfaceHighEmphasis,
-                                BlendMode.srcIn),
+                              meetingStore.recordingType["browser"] ==
+                                      HMSRecordingState.started
+                                  ? HMSThemeColors.alertErrorDefault
+                                  : HMSThemeColors.onSurfaceHighEmphasis,
+                              BlendMode.srcIn,
+                            ),
                           ),
-                          optionText: meetingStore.recordingType["browser"] ==
+                          optionText:
+                              meetingStore.recordingType["browser"] ==
                                   HMSRecordingState.paused
                               ? "Recording Paused"
                               : ((meetingStore.recordingType["hls"] ==
-                                          HMSRecordingState.started) ||
-                                      (meetingStore.recordingType["browser"] ==
-                                          HMSRecordingState.started))
-                                  ? "Recording"
-                                  : "Record",
+                                        HMSRecordingState.started) ||
+                                    (meetingStore.recordingType["browser"] ==
+                                        HMSRecordingState.started))
+                              ? "Recording"
+                              : "Record",
                         ),
                 if (meetingStore.isNoiseCancellationAvailable &&
                     meetingStore.localPeer?.audioTrack != null &&
                     meetingStore.isMicOn)
                   MoreOptionItem(
-                      onTap: () async {
-                        Navigator.pop(context);
-                        meetingStore.toggleNoiseCancellation();
-                      },
-                      isActive: meetingStore.isNoiseCancellationEnabled,
-                      optionIcon: SvgPicture.asset(
-                        "packages/hms_room_kit/lib/src/assets/icons/music_wave.svg",
-                        height: 20,
-                        width: 20,
-                        colorFilter: ColorFilter.mode(
-                            HMSThemeColors.onSurfaceHighEmphasis,
-                            BlendMode.srcIn),
+                    onTap: () async {
+                      Navigator.pop(context);
+                      meetingStore.toggleNoiseCancellation();
+                    },
+                    isActive: meetingStore.isNoiseCancellationEnabled,
+                    optionIcon: SvgPicture.asset(
+                      "packages/hms_room_kit/lib/src/assets/icons/music_wave.svg",
+                      height: 20,
+                      width: 20,
+                      colorFilter: ColorFilter.mode(
+                        HMSThemeColors.onSurfaceHighEmphasis,
+                        BlendMode.srcIn,
                       ),
-                      optionText: meetingStore.isNoiseCancellationEnabled
-                          ? "Noise Reduced"
-                          : "Reduce Noise"),
+                    ),
+                    optionText: meetingStore.isNoiseCancellationEnabled
+                        ? "Noise Reduced"
+                        : "Reduce Noise",
+                  ),
 
                 if (meetingStore
-                        .localPeer?.role.permissions.whiteboard?.admin ??
+                        .localPeer
+                        ?.role
+                        .permissions
+                        .whiteboard
+                        ?.admin ??
                     false)
                   MoreOptionItem(
-                      onTap: () async {
-                        meetingStore.toggleWhiteboard();
-                        Navigator.pop(context);
-                      },
-                      isActive: false,
-                      optionIcon: SvgPicture.asset(
-                        "packages/hms_room_kit/lib/src/assets/icons/pencil.svg",
-                        height: 20,
-                        width: 20,
-                        colorFilter: ColorFilter.mode(
-                            getWhiteboardStatusColor(meetingStore),
-                            BlendMode.srcIn),
+                    onTap: () async {
+                      meetingStore.toggleWhiteboard();
+                      Navigator.pop(context);
+                    },
+                    isActive: false,
+                    optionIcon: SvgPicture.asset(
+                      "packages/hms_room_kit/lib/src/assets/icons/pencil.svg",
+                      height: 20,
+                      width: 20,
+                      colorFilter: ColorFilter.mode(
+                        getWhiteboardStatusColor(meetingStore),
+                        BlendMode.srcIn,
                       ),
-                      optionTextColor: getWhiteboardStatusColor(meetingStore),
-                      optionText: meetingStore.isWhiteboardEnabled
-                          ? "Close Whiteboard"
-                          : "Open Whiteboard"),
+                    ),
+                    optionTextColor: getWhiteboardStatusColor(meetingStore),
+                    optionText: meetingStore.isWhiteboardEnabled
+                        ? "Close Whiteboard"
+                        : "Open Whiteboard",
+                  ),
 
                 ///This renders the closed captions option
                 ///This option is only rendered if the local peer has the permission to
@@ -440,74 +462,77 @@ class _AppUtilitiesBottomSheetState extends State<AppUtilitiesBottomSheet> {
                 if (getTranscriptionPermission(meetingStore) ||
                     meetingStore.isTranscriptionEnabled)
                   MoreOptionItem(
-                      onTap: () async {
-                        Navigator.pop(context);
-
-                        ///If the local peer has the permission to enable/disable transcription
-                        ///we show the popup to enable/disable transcription
-                        ///else we call the method to show/hide captions
-                        (getTranscriptionPermission(meetingStore))
-                            ? showModalBottomSheet(
-                                isScrollControlled: true,
-                                backgroundColor: HMSThemeColors.surfaceDim,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(16),
-                                      topRight: Radius.circular(16)),
-                                ),
-                                context: context,
-                                builder: (ctx) => ChangeNotifierProvider.value(
-                                  value: meetingStore,
-                                  child: meetingStore.isTranscriptionEnabled
-                                      ? ClosedCaptionControlBottomSheet(
-                                          meetingStore: meetingStore,
-                                        )
-                                      : ClosedCaptionBottomSheet(
-                                          onButtonPressed: () => meetingStore
-                                              .toggleTranscription(),
-                                          title: HMSTitleText(
-                                            text:
-                                                "Enable Closed Captions (CC) for this session?",
-                                            maxLines: 5,
-                                            textColor: HMSThemeColors
-                                                .onSecondaryHighEmphasis,
-                                            letterSpacing: 0.15,
-                                            fontSize: 20,
-                                          ),
-                                          subTitle: HMSSubheadingText(
-                                            text:
-                                                "This will enable Closed Captions for everyone in this room. You can disable it later.",
-                                            maxLines: 2,
-                                            textColor: HMSThemeColors
-                                                .onSurfaceMediumEmphasis,
-                                          ),
-                                          buttonText: "Enable for Everyone",
-                                        ),
-                                ),
-                              )
-                            : meetingStore.toggleTranscriptionDisplay();
-                      },
-
-                      ///The button is active if the transcription is enabled and getting displayed
-                      isActive: meetingStore.isTranscriptionDisplayed,
-                      optionIcon: SvgPicture.asset(
-                        "packages/hms_room_kit/lib/src/assets/icons/${meetingStore.isTranscriptionDisplayed ? "cc-filled" : "cc"}.svg",
-                        height: 20,
-                        width: 20,
-                        colorFilter: ColorFilter.mode(
-                            HMSThemeColors.onSurfaceHighEmphasis,
-                            BlendMode.srcIn),
-                      ),
-                      optionTextColor: HMSThemeColors.onSurfaceHighEmphasis,
+                    onTap: () async {
+                      Navigator.pop(context);
 
                       ///If the local peer has the permission to enable/disable transcription
-                      ///we show the option to enable/disable transcription
-                      ///else we show the option to show/hide captions
-                      optionText: getTranscriptionPermission(meetingStore)
-                          ? "Closed Captions"
-                          : meetingStore.isTranscriptionDisplayed
-                              ? "Hide Captions"
-                              : "Show Captions"),
+                      ///we show the popup to enable/disable transcription
+                      ///else we call the method to show/hide captions
+                      (getTranscriptionPermission(meetingStore))
+                          ? showModalBottomSheet(
+                              isScrollControlled: true,
+                              backgroundColor: HMSThemeColors.surfaceDim,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(16),
+                                  topRight: Radius.circular(16),
+                                ),
+                              ),
+                              context: context,
+                              builder: (ctx) => ChangeNotifierProvider.value(
+                                value: meetingStore,
+                                child: meetingStore.isTranscriptionEnabled
+                                    ? ClosedCaptionControlBottomSheet(
+                                        meetingStore: meetingStore,
+                                      )
+                                    : ClosedCaptionBottomSheet(
+                                        onButtonPressed: () =>
+                                            meetingStore.toggleTranscription(),
+                                        title: HMSTitleText(
+                                          text:
+                                              "Enable Closed Captions (CC) for this session?",
+                                          maxLines: 5,
+                                          textColor: HMSThemeColors
+                                              .onSecondaryHighEmphasis,
+                                          letterSpacing: 0.15,
+                                          fontSize: 20,
+                                        ),
+                                        subTitle: HMSSubheadingText(
+                                          text:
+                                              "This will enable Closed Captions for everyone in this room. You can disable it later.",
+                                          maxLines: 2,
+                                          textColor: HMSThemeColors
+                                              .onSurfaceMediumEmphasis,
+                                        ),
+                                        buttonText: "Enable for Everyone",
+                                      ),
+                              ),
+                            )
+                          : meetingStore.toggleTranscriptionDisplay();
+                    },
+
+                    ///The button is active if the transcription is enabled and getting displayed
+                    isActive: meetingStore.isTranscriptionDisplayed,
+                    optionIcon: SvgPicture.asset(
+                      "packages/hms_room_kit/lib/src/assets/icons/${meetingStore.isTranscriptionDisplayed ? "cc-filled" : "cc"}.svg",
+                      height: 20,
+                      width: 20,
+                      colorFilter: ColorFilter.mode(
+                        HMSThemeColors.onSurfaceHighEmphasis,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                    optionTextColor: HMSThemeColors.onSurfaceHighEmphasis,
+
+                    ///If the local peer has the permission to enable/disable transcription
+                    ///we show the option to enable/disable transcription
+                    ///else we show the option to show/hide captions
+                    optionText: getTranscriptionPermission(meetingStore)
+                        ? "Closed Captions"
+                        : meetingStore.isTranscriptionDisplayed
+                        ? "Hide Captions"
+                        : "Show Captions",
+                  ),
 
                 ///Virtual background is not supported out of the box in prebuilt as of now
                 // if (AppDebugConfig.isVirtualBackgroundEnabled &&
