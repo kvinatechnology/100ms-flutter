@@ -27,6 +27,7 @@ on:
 
 jobs:
   check_android_build:
+    name: Build Android App
     if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -75,12 +76,6 @@ jobs:
       - name: Get Flutter dependencies in Core SDK
         run: flutter pub get
         working-directory: packages/hmssdk_flutter
-
-      - name: Dart Format
-        run: dart format .
-
-      - name: Dart Fix
-        run: cd packages/hmssdk_flutter && dart fix --apply
 
       - name: Flutter Analyze in HMSSDK
         uses: invertase/github-action-dart-analyzer@v3
@@ -154,6 +149,7 @@ jobs:
           echo "- NDK Version: 27.2.12479018" >> $GITHUB_STEP_SUMMARY
 
   check_ios_build:
+    name: Build iOS App
     if: github.event.pull_request.draft == false
     runs-on: macos-latest
     timeout-minutes: 45
@@ -166,9 +162,9 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: '3.35.7'
+          flutter-version: "3.35.7"
           cache: true
-          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:"
 
       - name: Cache pub dependencies
         uses: actions/cache@v4
@@ -195,12 +191,6 @@ jobs:
       - name: Get Flutter dependencies in Core SDK
         run: flutter pub get
         working-directory: packages/hmssdk_flutter
-
-      - name: Dart Format
-        run: dart format .
-
-      - name: Dart Fix
-        run: cd packages/hmssdk_flutter && dart fix --apply
 
       - name: Flutter Analyze in HMSSDK
         uses: invertase/github-action-dart-analyzer@v3
