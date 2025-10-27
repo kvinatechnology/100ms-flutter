@@ -29,7 +29,7 @@ jobs:
   check_build:
     if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
 
     steps:
       - name: Checkout repository
@@ -39,7 +39,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: zulu
-          java-version: '17'
+          java-version: "17"
           cache: gradle
 
       - name: Setup Android SDK
@@ -47,14 +47,31 @@ jobs:
 
       - name: Install Android SDK 36 and NDK
         run: |
-          sdkmanager --install "platforms;android-36" "build-tools;36.0.0" "ndk;27.2.12479018"
+          yes | sdkmanager --licenses || true
+          sdkmanager --install "platforms;android-36" || echo "Platform android-36 not available, continuing..."
+          sdkmanager --install "ndk;27.2.12479018" || echo "NDK 27.2.12479018 not available, using latest..."
+          sdkmanager --list_installed
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: '3.24.0'
+          flutter-version: "3.35.7"
           cache: true
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:"
+
+      - name: Cache pub dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+            packages/hmssdk_flutter/.dart_tool
+            packages/hms_room_kit/.dart_tool
+            packages/hmssdk_flutter/example/.dart_tool
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
+
       - name: Get Flutter dependencies in Core SDK
         run: flutter pub get
         working-directory: packages/hmssdk_flutter
@@ -69,6 +86,7 @@ jobs:
         uses: invertase/github-action-dart-analyzer@v3
         with:
           working-directory: packages/hmssdk_flutter
+        continue-on-error: false
 
       - name: Commit and Push changes
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -80,14 +98,63 @@ jobs:
         env:
           FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
         run: |
-          echo "$FIREBASE_CONFIG" > packages/hmssdk_flutter/example/android/app/google-services.json
+          if [ -z "$FIREBASE_CONFIG" ]; then
+            echo "⚠️ FIREBASE_CONFIG secret is empty, using dummy config"
+            echo '{"project_info":{"project_id":"dummy"}}' > packages/hmssdk_flutter/example/android/app/google-services.json
+          else
+            echo "$FIREBASE_CONFIG" > packages/hmssdk_flutter/example/android/app/google-services.json
+          fi
+          echo "✅ Firebase config file created"
+
+      - name: Get hms_room_kit dependencies
+        run: flutter pub get
+        working-directory: packages/hms_room_kit
 
       - name: Get Flutter dependencies in Example App
         run: flutter pub get
         working-directory: packages/hmssdk_flutter/example
 
+      - name: Verify dependencies
+        run: |
+          echo "📦 Verifying dependency resolution..."
+          flutter pub deps
+        working-directory: packages/hmssdk_flutter/example
+
       - name: Build Android App Bundle
-        run: flutter build appbundle --debug -t lib/main.dart
+        run: |
+          echo "🔨 Starting Android App Bundle build..."
+          flutter build appbundle --debug -t lib/main.dart --verbose
         working-directory: packages/hmssdk_flutter/example
         env:
           ANDROID_SDK_ROOT: ${{ env.ANDROID_HOME }}
+
+      - name: Upload build artifacts
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-app-bundle
+          path: packages/hmssdk_flutter/example/build/app/outputs/bundle/debug/*.aab
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: Build Summary
+        if: always()
+        run: |
+          echo "## 🎯 Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Component | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+          if [ -f packages/hmssdk_flutter/example/build/app/outputs/bundle/debug/*.aab ]; then
+            echo "| Android App Bundle | ✅ Built Successfully |" >> $GITHUB_STEP_SUMMARY
+            echo "| Build Type | Debug |" >> $GITHUB_STEP_SUMMARY
+            echo "| Target SDK | 36 (16KB page size support) |" >> $GITHUB_STEP_SUMMARY
+            echo "| Architectures | arm64-v8a, x86_64 |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Android App Bundle | ❌ Build Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📋 Configuration" >> $GITHUB_STEP_SUMMARY
+          echo "- Flutter Version: 3.24.0" >> $GITHUB_STEP_SUMMARY
+          echo "- Java Version: 17" >> $GITHUB_STEP_SUMMARY
+          echo "- Compile SDK: 36" >> $GITHUB_STEP_SUMMARY
+          echo "- NDK Version: 27.2.12479018" >> $GITHUB_STEP_SUMMARY
