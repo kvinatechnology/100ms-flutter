@@ -489,14 +489,16 @@ main() {
   echo ""
 
   # Step 1: Perform Flutter pub get
-  log_info "[1/3] Running flutter pub get..."
+  log_info "[1/2] Running flutter pub get..."
   perform_pub_actions || {
     log_error "Flutter pub get failed"
     exit 1
   }
 
   echo ""
-  log_info "[2/3] Building and distributing apps..."
+  log_info "[2/2] Building and distributing apps..."
+  echo ""
+  log_info "(Changelog will be updated by Fastlane during build)"
   echo ""
 
   # Step 2: Build and release Android & iOS in parallel
@@ -541,18 +543,11 @@ main() {
   log_success "All distributions completed successfully"
   echo ""
 
-  # Step 3: Update changelog with bumped versions
-  log_info "[3/3] Updating changelog with bumped versions..."
-  if [ "$DRY_RUN" = false ]; then
-    node "${SCRIPT_DIR}/scripts/update-changelog-versions.js" || {
-      log_warn "Failed to update changelog versions (non-fatal, continuing...)"
-    }
-  else
-    log_info "[DRY RUN] Would run: node scripts/update-changelog-versions.js"
-  fi
+  # Note: Changelog is now updated by Fastlane during build process
+  log_info "Changelog has been updated by Fastlane during build"
   echo ""
 
-  # Step 4: Perform git actions
+  # Step 3: Perform git actions
   if [ "$SKIP_COMMIT" = false ]; then
     log_info "Committing and pushing changes..."
     perform_git_actions || {
