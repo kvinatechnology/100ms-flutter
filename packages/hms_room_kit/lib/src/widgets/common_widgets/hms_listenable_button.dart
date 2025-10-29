@@ -46,14 +46,14 @@ class HMSListenableButton extends StatelessWidget {
         builder: (context, value, child) {
           return ElevatedButton(
             style: ButtonStyle(
-              shadowColor: MaterialStateProperty.all(
+              shadowColor: WidgetStateProperty.all(
                 shadowColor ?? HMSThemeColors.surfaceDim,
               ),
               backgroundColor: (textController.text.trim().isEmpty ||
                       isDisabled)
-                  ? MaterialStateProperty.all(HMSThemeColors.primaryDisabled)
-                  : MaterialStateProperty.all(HMSThemeColors.primaryDefault),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  ? WidgetStateProperty.all(HMSThemeColors.primaryDisabled)
+                  : WidgetStateProperty.all(HMSThemeColors.primaryDefault),
+              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),

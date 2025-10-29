@@ -199,11 +199,11 @@ class UtilityComponents {
               Expanded(
                 child: ElevatedButton(
                   style: ButtonStyle(
-                    shadowColor: MaterialStateProperty.all(themeSurfaceColor),
-                    backgroundColor: MaterialStateProperty.all(
+                    shadowColor: WidgetStateProperty.all(themeSurfaceColor),
+                    backgroundColor: WidgetStateProperty.all(
                       themeBottomSheetColor,
                     ),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         side: BorderSide(
                           width: 1,
@@ -230,9 +230,9 @@ class UtilityComponents {
               Expanded(
                 child: ElevatedButton(
                   style: ButtonStyle(
-                    shadowColor: MaterialStateProperty.all(themeSurfaceColor),
-                    backgroundColor: MaterialStateProperty.all(errorColor),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    shadowColor: WidgetStateProperty.all(themeSurfaceColor),
+                    backgroundColor: WidgetStateProperty.all(errorColor),
+                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         side: BorderSide(width: 1, color: errorColor),
                         borderRadius: BorderRadius.circular(8.0),
@@ -276,7 +276,7 @@ class UtilityComponents {
     );
   }
 
-  static showTrackChangeDialog(
+  static Future<void> showTrackChangeDialog(
     BuildContext context,
     HMSTrackChangeRequest trackChangeRequest,
   ) async {
@@ -292,7 +292,7 @@ class UtilityComponents {
     );
   }
 
-  static showonExceptionDialog(event, BuildContext context) {
+  static void showonExceptionDialog(event, BuildContext context) {
     event = event as HMSException;
     var message =
         "${event.message} ${event.id ?? ""} ${event.code?.errorCode ?? ""} ${event.description} ${event.action} ${event.params ?? "".toString()}";
@@ -373,7 +373,7 @@ class UtilityComponents {
     return answer;
   }
 
-  static showHLSDialog({required BuildContext context}) async {
+  static Future<void> showHLSDialog({required BuildContext context}) async {
     TextEditingController textController = TextEditingController();
     textController.text = Constant.streamingUrl;
     bool isSingleFileChecked = false, isVODChecked = false;
@@ -458,7 +458,7 @@ class UtilityComponents {
     );
   }
 
-  static showRoleListForMute(
+  static Future<void> showRoleListForMute(
     BuildContext context,
     List<HMSRole> roles,
     MeetingStore meetingStore,
@@ -539,13 +539,13 @@ class UtilityComponents {
                       children: [
                         ElevatedButton(
                           style: ButtonStyle(
-                            shadowColor: MaterialStateProperty.all(
+                            shadowColor: WidgetStateProperty.all(
                               themeSurfaceColor,
                             ),
-                            backgroundColor: MaterialStateProperty.all(
+                            backgroundColor: WidgetStateProperty.all(
                               errorColor,
                             ),
-                            shape: MaterialStateProperty.all<
+                            shape: WidgetStateProperty.all<
                                 RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 side: BorderSide(
@@ -566,13 +566,13 @@ class UtilityComponents {
                         ),
                         ElevatedButton(
                           style: ButtonStyle(
-                            shadowColor: MaterialStateProperty.all(
+                            shadowColor: WidgetStateProperty.all(
                               themeSurfaceColor,
                             ),
-                            backgroundColor: MaterialStateProperty.all(
+                            backgroundColor: WidgetStateProperty.all(
                               hmsdefaultColor,
                             ),
-                            shape: MaterialStateProperty.all<
+                            shape: WidgetStateProperty.all<
                                 RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 side: BorderSide(
@@ -611,7 +611,7 @@ class UtilityComponents {
     );
   }
 
-  static showDialogForBulkRoleChange(
+  static Future<void> showDialogForBulkRoleChange(
     BuildContext context,
     List<HMSRole> roles,
     MeetingStore meetingStore,
@@ -721,13 +721,13 @@ class UtilityComponents {
                       children: [
                         ElevatedButton(
                           style: ButtonStyle(
-                            shadowColor: MaterialStateProperty.all(
+                            shadowColor: WidgetStateProperty.all(
                               themeSurfaceColor,
                             ),
-                            backgroundColor: MaterialStateProperty.all(
+                            backgroundColor: WidgetStateProperty.all(
                               errorColor,
                             ),
-                            shape: MaterialStateProperty.all<
+                            shape: WidgetStateProperty.all<
                                 RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 side: BorderSide(
@@ -750,13 +750,13 @@ class UtilityComponents {
                         ),
                         ElevatedButton(
                           style: ButtonStyle(
-                            shadowColor: MaterialStateProperty.all(
+                            shadowColor: WidgetStateProperty.all(
                               themeSurfaceColor,
                             ),
-                            backgroundColor: MaterialStateProperty.all(
+                            backgroundColor: WidgetStateProperty.all(
                               hmsdefaultColor,
                             ),
-                            shape: MaterialStateProperty.all<
+                            shape: WidgetStateProperty.all<
                                 RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 side: BorderSide(
@@ -858,11 +858,11 @@ class UtilityComponents {
                 children: [
                   ElevatedButton(
                     style: ButtonStyle(
-                      shadowColor: MaterialStateProperty.all(themeSurfaceColor),
-                      backgroundColor: MaterialStateProperty.all(
+                      shadowColor: WidgetStateProperty.all(themeSurfaceColor),
+                      backgroundColor: WidgetStateProperty.all(
                         themeBottomSheetColor,
                       ),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           side: const BorderSide(
                             width: 1,
@@ -892,11 +892,11 @@ class UtilityComponents {
                   ),
                   ElevatedButton(
                     style: ButtonStyle(
-                      shadowColor: MaterialStateProperty.all(themeSurfaceColor),
-                      backgroundColor: MaterialStateProperty.all(
+                      shadowColor: WidgetStateProperty.all(themeSurfaceColor),
+                      backgroundColor: WidgetStateProperty.all(
                         hmsdefaultColor,
                       ),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           side: BorderSide(width: 1, color: hmsdefaultColor),
                           borderRadius: BorderRadius.circular(8.0),
@@ -1001,11 +1001,11 @@ class UtilityComponents {
               Expanded(
                 child: ElevatedButton(
                   style: ButtonStyle(
-                    shadowColor: MaterialStateProperty.all(themeSurfaceColor),
-                    backgroundColor: MaterialStateProperty.all(
+                    shadowColor: WidgetStateProperty.all(themeSurfaceColor),
+                    backgroundColor: WidgetStateProperty.all(
                       const Color.fromRGBO(32, 22, 23, 1),
                     ),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         side: BorderSide(
                           width: 1,
@@ -1037,9 +1037,9 @@ class UtilityComponents {
               Expanded(
                 child: ElevatedButton(
                   style: ButtonStyle(
-                    shadowColor: MaterialStateProperty.all(themeSurfaceColor),
-                    backgroundColor: MaterialStateProperty.all(errorColor),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    shadowColor: WidgetStateProperty.all(themeSurfaceColor),
+                    backgroundColor: WidgetStateProperty.all(errorColor),
+                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         side: BorderSide(width: 1, color: errorColor),
                         borderRadius: BorderRadius.circular(8.0),
@@ -1186,7 +1186,7 @@ class UtilityComponents {
     );
   }
 
-  static onEndStream({
+  static Future onEndStream({
     required BuildContext context,
     required String title,
     required String content,
@@ -1242,11 +1242,11 @@ class UtilityComponents {
               Expanded(
                 child: ElevatedButton(
                   style: ButtonStyle(
-                    shadowColor: MaterialStateProperty.all(themeSurfaceColor),
-                    backgroundColor: MaterialStateProperty.all(
+                    shadowColor: WidgetStateProperty.all(themeSurfaceColor),
+                    backgroundColor: WidgetStateProperty.all(
                       const Color.fromRGBO(32, 22, 23, 1),
                     ),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         side: BorderSide(
                           width: 1,
@@ -1278,9 +1278,9 @@ class UtilityComponents {
               Expanded(
                 child: ElevatedButton(
                   style: ButtonStyle(
-                    shadowColor: MaterialStateProperty.all(themeSurfaceColor),
-                    backgroundColor: MaterialStateProperty.all(errorColor),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    shadowColor: WidgetStateProperty.all(themeSurfaceColor),
+                    backgroundColor: WidgetStateProperty.all(errorColor),
+                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         side: BorderSide(width: 1, color: errorColor),
                         borderRadius: BorderRadius.circular(8.0),
@@ -1376,11 +1376,11 @@ class UtilityComponents {
             children: [
               ElevatedButton(
                 style: ButtonStyle(
-                  shadowColor: MaterialStateProperty.all(themeSurfaceColor),
-                  backgroundColor: MaterialStateProperty.all(
+                  shadowColor: WidgetStateProperty.all(themeSurfaceColor),
+                  backgroundColor: WidgetStateProperty.all(
                     themeBottomSheetColor,
                   ),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       side: const BorderSide(
                         width: 1,
@@ -1409,9 +1409,9 @@ class UtilityComponents {
               ),
               ElevatedButton(
                 style: ButtonStyle(
-                  shadowColor: MaterialStateProperty.all(themeSurfaceColor),
-                  backgroundColor: MaterialStateProperty.all(hmsdefaultColor),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  shadowColor: WidgetStateProperty.all(themeSurfaceColor),
+                  backgroundColor: WidgetStateProperty.all(hmsdefaultColor),
+                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       side: BorderSide(width: 1, color: hmsdefaultColor),
                       borderRadius: BorderRadius.circular(8.0),
@@ -1552,11 +1552,11 @@ class UtilityComponents {
                 children: [
                   ElevatedButton(
                     style: ButtonStyle(
-                      shadowColor: MaterialStateProperty.all(themeSurfaceColor),
-                      backgroundColor: MaterialStateProperty.all(
+                      shadowColor: WidgetStateProperty.all(themeSurfaceColor),
+                      backgroundColor: WidgetStateProperty.all(
                         themeBottomSheetColor,
                       ),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           side: const BorderSide(
                             width: 1,
@@ -1585,11 +1585,11 @@ class UtilityComponents {
                   ),
                   ElevatedButton(
                     style: ButtonStyle(
-                      shadowColor: MaterialStateProperty.all(themeSurfaceColor),
-                      backgroundColor: MaterialStateProperty.all(
+                      shadowColor: WidgetStateProperty.all(themeSurfaceColor),
+                      backgroundColor: WidgetStateProperty.all(
                         hmsdefaultColor,
                       ),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           side: BorderSide(width: 1, color: hmsdefaultColor),
                           borderRadius: BorderRadius.circular(8.0),

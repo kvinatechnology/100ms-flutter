@@ -135,7 +135,7 @@ class _PollQuizFormState extends State<PollQuizForm> {
                 child: CupertinoSwitch(
                   value: _hideVoteCount,
                   onChanged: (value) => setHideVoteCount(value),
-                  activeColor: HMSThemeColors.primaryDefault,
+                  activeTrackColor: HMSThemeColors.primaryDefault,
                 ),
               ),
             ),

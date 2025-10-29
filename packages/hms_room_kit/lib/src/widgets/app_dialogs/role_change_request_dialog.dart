@@ -43,11 +43,11 @@ class RoleChangeRequestDialogState extends State<RoleChangeRequestDialog> {
           children: [
             ElevatedButton(
               style: ButtonStyle(
-                shadowColor: MaterialStateProperty.all(themeSurfaceColor),
-                backgroundColor: MaterialStateProperty.all(
+                shadowColor: WidgetStateProperty.all(themeSurfaceColor),
+                backgroundColor: WidgetStateProperty.all(
                   themeBottomSheetColor,
                 ),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     side: BorderSide(width: 1, color: popupButtonBorderColor),
                     borderRadius: BorderRadius.circular(8.0),
@@ -70,9 +70,9 @@ class RoleChangeRequestDialogState extends State<RoleChangeRequestDialog> {
             ),
             ElevatedButton(
               style: ButtonStyle(
-                shadowColor: MaterialStateProperty.all(themeSurfaceColor),
-                backgroundColor: MaterialStateProperty.all(errorColor),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                shadowColor: WidgetStateProperty.all(themeSurfaceColor),
+                backgroundColor: WidgetStateProperty.all(errorColor),
+                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     side: BorderSide(width: 1, color: errorColor),
                     borderRadius: BorderRadius.circular(8.0),

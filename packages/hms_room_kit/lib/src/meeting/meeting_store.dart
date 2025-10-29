@@ -2273,7 +2273,7 @@ class MeetingStore extends ChangeNotifier
   ///If the peer is in spotlight then it is placed on the first index
   ///If video is ON then the peer is placed on the first index
   ///If video is OFF then the peer is placed on the last index
-  rearrangeTile(PeerTrackNode peerTrackNode, int index) {
+  void rearrangeTile(PeerTrackNode peerTrackNode, int index) {
     if (peerTrackNode.track!.isMute) {
       if (peerTracks.length - 1 > index &&
           (peerTracks[index + 1].track?.isMute ?? true)) {

@@ -122,11 +122,11 @@ class ChangeSimulcastLayerOptionDialogState
           children: [
             ElevatedButton(
               style: ButtonStyle(
-                shadowColor: MaterialStateProperty.all(themeSurfaceColor),
-                backgroundColor: MaterialStateProperty.all(
+                shadowColor: WidgetStateProperty.all(themeSurfaceColor),
+                backgroundColor: WidgetStateProperty.all(
                   themeBottomSheetColor,
                 ),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     side: const BorderSide(
                       width: 1,
@@ -155,9 +155,9 @@ class ChangeSimulcastLayerOptionDialogState
             ),
             ElevatedButton(
               style: ButtonStyle(
-                shadowColor: MaterialStateProperty.all(themeSurfaceColor),
-                backgroundColor: MaterialStateProperty.all(hmsdefaultColor),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                shadowColor: WidgetStateProperty.all(themeSurfaceColor),
+                backgroundColor: WidgetStateProperty.all(hmsdefaultColor),
+                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     side: BorderSide(width: 1, color: hmsdefaultColor),
                     borderRadius: BorderRadius.circular(8.0),

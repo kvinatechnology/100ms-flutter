@@ -114,7 +114,7 @@ class _NotificationSettingsBottomSheetState
                       ),
                     ),
                     trailing: CupertinoSwitch(
-                      activeColor: hmsdefaultColor,
+                      activeTrackColor: hmsdefaultColor,
                       value: peerJoinedNotif,
                       onChanged: (value) => {
                         peerJoinedNotif = value,
@@ -149,7 +149,7 @@ class _NotificationSettingsBottomSheetState
                       ),
                     ),
                     trailing: CupertinoSwitch(
-                      activeColor: hmsdefaultColor,
+                      activeTrackColor: hmsdefaultColor,
                       value: peerLeaveNotif,
                       onChanged: (value) => {
                         peerLeaveNotif = value,
@@ -184,7 +184,7 @@ class _NotificationSettingsBottomSheetState
                       ),
                     ),
                     trailing: CupertinoSwitch(
-                      activeColor: hmsdefaultColor,
+                      activeTrackColor: hmsdefaultColor,
                       value: newMessageNotif,
                       onChanged: (value) => {
                         newMessageNotif = value,
@@ -218,7 +218,7 @@ class _NotificationSettingsBottomSheetState
                       ),
                     ),
                     trailing: CupertinoSwitch(
-                      activeColor: hmsdefaultColor,
+                      activeTrackColor: hmsdefaultColor,
                       value: handRaiseNotif,
                       onChanged: (value) => {
                         handRaiseNotif = value,
@@ -252,7 +252,7 @@ class _NotificationSettingsBottomSheetState
                       ),
                     ),
                     trailing: CupertinoSwitch(
-                      activeColor: hmsdefaultColor,
+                      activeTrackColor: hmsdefaultColor,
                       value: errorNotif,
                       onChanged: (value) => {
                         errorNotif = value,

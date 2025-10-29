@@ -72,13 +72,13 @@ class _ClosedCaptionControlBottomSheetState
               const SizedBox(height: 16),
               ElevatedButton(
                 style: ButtonStyle(
-                  shadowColor: MaterialStateProperty.all(
+                  shadowColor: WidgetStateProperty.all(
                     HMSThemeColors.surfaceDim,
                   ),
-                  backgroundColor: MaterialStateProperty.all(
+                  backgroundColor: WidgetStateProperty.all(
                     HMSThemeColors.secondaryDefault,
                   ),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
@@ -102,13 +102,13 @@ class _ClosedCaptionControlBottomSheetState
               const SizedBox(height: 16),
               ElevatedButton(
                 style: ButtonStyle(
-                  shadowColor: MaterialStateProperty.all(
+                  shadowColor: WidgetStateProperty.all(
                     HMSThemeColors.surfaceDim,
                   ),
-                  backgroundColor: MaterialStateProperty.all(
+                  backgroundColor: WidgetStateProperty.all(
                     HMSThemeColors.alertErrorDefault,
                   ),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),

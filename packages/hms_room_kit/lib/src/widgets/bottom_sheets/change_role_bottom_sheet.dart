@@ -110,12 +110,12 @@ class ChangeRoleBottomSheetState extends State<ChangeRoleBottomSheet> {
             const SizedBox(height: 24),
             ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
+                backgroundColor: WidgetStateProperty.all(
                   roleSelected == null
                       ? HMSThemeColors.primaryDisabled
                       : HMSThemeColors.primaryDefault,
                 ),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),

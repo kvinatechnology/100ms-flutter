@@ -88,13 +88,13 @@ class _ClosedCaptionBottomSheetState extends State<ClosedCaptionBottomSheet> {
               const SizedBox(height: 16),
               ElevatedButton(
                 style: ButtonStyle(
-                  shadowColor: MaterialStateProperty.all(
+                  shadowColor: WidgetStateProperty.all(
                     HMSThemeColors.surfaceDim,
                   ),
-                  backgroundColor: MaterialStateProperty.all(
+                  backgroundColor: WidgetStateProperty.all(
                     widget.buttonColor ?? HMSThemeColors.primaryDefault,
                   ),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
