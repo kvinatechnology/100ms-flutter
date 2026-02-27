@@ -3217,10 +3217,8 @@ class MeetingStore extends ChangeNotifier
       }
       notifyListeners();
     } else if (state == AppLifecycleState.detached) {
-      if (Platform.isAndroid && !isPipActive) {
-        isPipActive = await HMSAndroidPIPController.isActive();
-      }
-      notifyListeners();
+      // App is being killed — leave the meeting so other users don't see a ghost peer
+      leave();
     }
   }
 }
