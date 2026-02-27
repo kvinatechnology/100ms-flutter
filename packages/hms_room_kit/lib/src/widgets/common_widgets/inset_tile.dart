@@ -118,9 +118,11 @@ class _InsetTileState extends State<InsetTile> {
                           widget.avatarTitleTextLineHeight,
                     ),
                   ),
-                  const HandRaise(), //top left
-                  const BRBTag(), //top left
-                  const AudioMuteStatus(), //top right
+                  const Positioned(
+                      top: 5, left: 5, child: HandRaise()), //top left
+                  const Positioned(top: 5, left: 5, child: BRBTag()), //top left
+                  const Positioned(
+                      top: 5, right: 5, child: AudioMuteStatus()), //top right
                   if (isButtonVisible)
                     LocalPeerMoreOption(
                       callbackFunction: widget.callbackFunction,

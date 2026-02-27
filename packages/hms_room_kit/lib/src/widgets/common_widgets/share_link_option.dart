@@ -177,7 +177,9 @@ class ShareLinkOptionDialogState extends State<ShareLinkOptionDialog> {
                   }
                   meetingLink =
                       "${codeDomain[0]}/${widget.roomID}/${valueChoose!.name}";
-                  await Share.share(meetingLink, subject: "Join Meet");
+                  await SharePlus.instance.share(
+                    ShareParams(text: meetingLink, subject: "Join Meet"),
+                  );
                 }
               },
               child: Padding(

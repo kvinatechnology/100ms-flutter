@@ -28,60 +28,56 @@ class _AudioMuteStatusState extends State<AudioMuteStatus> {
         peerTrackNode.audioLevel,
       ),
       builder: (_, data, __) {
-        return Positioned(
-          top: 5,
-          right: 5,
-          child: Semantics(
-            label: "fl_${context.read<PeerTrackNode>().peer.name}_audio_mute",
-            child: data.item1
-                ? Container(
-                    height: 32,
-                    width: 32,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: HMSThemeColors.secondaryDim,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: SvgPicture.asset(
-                        'packages/hms_room_kit/lib/src/assets/icons/mic_state_off.svg',
-                        width: 16,
-                        height: 16,
-                        semanticsLabel: "audio_mute_label",
-                        colorFilter: ColorFilter.mode(
-                          HMSThemeColors.onSecondaryHighEmphasis,
-                          BlendMode.srcIn,
-                        ),
+        return Semantics(
+          label: "fl_${context.read<PeerTrackNode>().peer.name}_audio_mute",
+          child: data.item1
+              ? Container(
+                  height: 32,
+                  width: 32,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: HMSThemeColors.secondaryDim,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: SvgPicture.asset(
+                      'packages/hms_room_kit/lib/src/assets/icons/mic_state_off.svg',
+                      width: 16,
+                      height: 16,
+                      semanticsLabel: "audio_mute_label",
+                      colorFilter: ColorFilter.mode(
+                        HMSThemeColors.onSecondaryHighEmphasis,
+                        BlendMode.srcIn,
                       ),
                     ),
-                  )
-
-                ///We render the animation only when the audio level is greater than zero
-                ///else we show the ellipsis icon
-                : Container(
-                    height: 32,
-                    width: 32,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: HMSThemeColors.secondaryDim,
-                    ),
-                    child: data.item2 > 0
-                        ? Lottie.asset(
-                            "packages/hms_room_kit/lib/src/assets/icons/audio-level.json",
-                            height: 24,
-                            width: 24,
-                          )
-                        : SvgPicture.asset(
-                            'packages/hms_room_kit/lib/src/assets/icons/zero_audio_level.svg',
-                            fit: BoxFit.scaleDown,
-                            semanticsLabel: "audio_mute_label",
-                            colorFilter: ColorFilter.mode(
-                              HMSThemeColors.onSecondaryHighEmphasis,
-                              BlendMode.srcIn,
-                            ),
-                          ),
                   ),
-          ),
+                )
+
+              ///We render the animation only when the audio level is greater than zero
+              ///else we show the ellipsis icon
+              : Container(
+                  height: 32,
+                  width: 32,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: HMSThemeColors.secondaryDim,
+                  ),
+                  child: data.item2 > 0
+                      ? Lottie.asset(
+                          "packages/hms_room_kit/lib/src/assets/icons/audio-level.json",
+                          height: 24,
+                          width: 24,
+                        )
+                      : SvgPicture.asset(
+                          'packages/hms_room_kit/lib/src/assets/icons/zero_audio_level.svg',
+                          fit: BoxFit.scaleDown,
+                          semanticsLabel: "audio_mute_label",
+                          colorFilter: ColorFilter.mode(
+                            HMSThemeColors.onSecondaryHighEmphasis,
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                ),
         );
       },
     );

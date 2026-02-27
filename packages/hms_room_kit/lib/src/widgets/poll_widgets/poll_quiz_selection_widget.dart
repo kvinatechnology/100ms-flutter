@@ -25,7 +25,7 @@ class _PollQuizSelectionWidgetState extends State<PollQuizSelectionWidget> {
   int index = 0;
 
   ///[_updateSelection] updates the selection for poll or quiz
-  void _updateSelection(newIndex) {
+  void _updateSelection(int newIndex) {
     widget.updateSelectionCallback(newIndex);
     setState(() {
       index = newIndex;

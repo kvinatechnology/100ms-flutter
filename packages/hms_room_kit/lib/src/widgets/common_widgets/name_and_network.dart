@@ -23,7 +23,7 @@ class NameAndNetwork extends StatelessWidget {
       left: 5,
       child: Container(
         decoration: BoxDecoration(
-          color: HMSThemeColors.backgroundDim.withOpacity(0.64),
+          color: HMSThemeColors.backgroundDim.withValues(alpha: 0.64),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Center(

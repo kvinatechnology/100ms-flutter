@@ -142,8 +142,8 @@ class _PreviewForRoleHeaderState extends State<PreviewForRoleHeader> {
                             borderRadius: const BorderRadius.all(
                               Radius.circular(4),
                             ),
-                            color: HMSThemeColors.backgroundDim.withOpacity(
-                              0.64,
+                            color: HMSThemeColors.backgroundDim.withValues(
+                              alpha: 0.64,
                             ),
                           ),
                           child: Row(

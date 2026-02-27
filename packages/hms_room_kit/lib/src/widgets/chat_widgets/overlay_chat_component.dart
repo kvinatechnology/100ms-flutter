@@ -394,7 +394,7 @@ class _OverlayChatComponentState extends State<OverlayChatComponent> {
                                               Radius.circular(4),
                                             ),
                                             color: HMSThemeColors.backgroundDim
-                                                .withOpacity(0.64),
+                                                .withValues(alpha: 0.64),
                                           ),
                                           child: Padding(
                                             padding: const EdgeInsets.all(4.0),

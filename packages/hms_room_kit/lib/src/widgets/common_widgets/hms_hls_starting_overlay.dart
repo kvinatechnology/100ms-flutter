@@ -18,8 +18,8 @@ class HMSHLSStartingOverlay extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            HMSThemeColors.backgroundDim.withOpacity(1),
-            HMSThemeColors.backgroundDim.withOpacity(0),
+            HMSThemeColors.backgroundDim.withValues(alpha: 1),
+            HMSThemeColors.backgroundDim.withValues(alpha: 0),
           ],
         ),
       ),

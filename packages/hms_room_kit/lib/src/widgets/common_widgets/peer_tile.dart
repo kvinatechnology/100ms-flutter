@@ -3,22 +3,21 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:focus_detector_v2/focus_detector_v2.dart';
-import 'package:hmssdk_flutter/hmssdk_flutter.dart';
-import 'package:provider/provider.dart';
-
 // Project imports
 import 'package:hms_room_kit/src/layout_api/hms_theme_colors.dart';
-import 'package:hms_room_kit/src/widgets/peer_widgets/local_peer_more_option.dart';
-import 'package:hms_room_kit/src/widgets/peer_widgets/name_and_network.dart';
 import 'package:hms_room_kit/src/model/peer_track_node.dart';
 import 'package:hms_room_kit/src/widgets/common_widgets/degrade_tile.dart';
 import 'package:hms_room_kit/src/widgets/common_widgets/video_view.dart';
 import 'package:hms_room_kit/src/widgets/peer_widgets/audio_mute_status.dart';
 import 'package:hms_room_kit/src/widgets/peer_widgets/brb_tag.dart';
 import 'package:hms_room_kit/src/widgets/peer_widgets/hand_raise.dart';
+import 'package:hms_room_kit/src/widgets/peer_widgets/local_peer_more_option.dart';
 import 'package:hms_room_kit/src/widgets/peer_widgets/more_option.dart';
+import 'package:hms_room_kit/src/widgets/peer_widgets/name_and_network.dart';
 import 'package:hms_room_kit/src/widgets/peer_widgets/rtc_stats_view.dart';
 import 'package:hms_room_kit/src/widgets/whiteboard_screenshare/screenshare_tile.dart';
+import 'package:hmssdk_flutter/hmssdk_flutter.dart';
+import 'package:provider/provider.dart';
 
 ///This widget is used to render the peer tile
 ///It contains following parameters
@@ -35,6 +34,8 @@ class PeerTile extends StatefulWidget {
   final double avatarTitleFontSize;
   final double avatarTitleTextLineHeight;
   final HMSTextureViewController? videoViewController;
+  final bool isFiveLayout;
+  final int index;
   const PeerTile({
     Key? key,
     this.scaleType = ScaleType.SCALE_ASPECT_FILL,
@@ -43,6 +44,8 @@ class PeerTile extends StatefulWidget {
     this.avatarTitleFontSize = 34,
     this.avatarTitleTextLineHeight = 40,
     this.videoViewController,
+    this.isFiveLayout = false,
+    required this.index,
   }) : super(key: key);
 
   @override
@@ -60,28 +63,21 @@ class _PeerTileState extends State<PeerTile> {
       child: FocusDetector(
         onFocusLost: () {
           if (mounted) {
-            Provider.of<PeerTrackNode>(
-              context,
-              listen: false,
-            ).setOffScreenStatus(true);
+            Provider.of<PeerTrackNode>(context, listen: false)
+                .setOffScreenStatus(true);
           }
         },
         onFocusGained: () {
-          Provider.of<PeerTrackNode>(
-            context,
-            listen: false,
-          ).setOffScreenStatus(false);
+          Provider.of<PeerTrackNode>(context, listen: false)
+              .setOffScreenStatus(false);
           if (context.read<PeerTrackNode>().track != null) {
-            log(
-              "HMSVideoViewController add video track ${context.read<PeerTrackNode>().peer.name} trackType: ${context.read<PeerTrackNode>().track?.source}",
-            );
-            widget.videoViewController?.addTrack(
-              track: context.read<PeerTrackNode>().track!,
-            );
+            log("HMSVideoViewController add video track ${context.read<PeerTrackNode>().peer.name} trackType: ${context.read<PeerTrackNode>().track?.source}");
+            widget.videoViewController
+                ?.addTrack(track: context.read<PeerTrackNode>().track!);
           }
         },
-        child: LayoutBuilder(
-          builder: (context, BoxConstraints constraints) {
+        child: Builder(
+          builder: (context) {
             return context.read<PeerTrackNode>().uid.contains("mainVideo")
                 ? Container(
                     key: key,
@@ -106,25 +102,56 @@ class _PeerTileState extends State<PeerTile> {
                               videoViewController: widget.videoViewController,
                             ),
                           ),
+                          // Removed nested LayoutBuilder to prevent layout issues
                           Semantics(
                             label:
                                 "fl_${context.read<PeerTrackNode>().peer.name}_degraded_tile",
-                            child: DegradeTile(constraints: constraints),
+                            child: DegradeTile(
+                              constraints: BoxConstraints(
+                                maxWidth: MediaQuery.of(context).size.width,
+                                maxHeight: MediaQuery.of(context).size.height,
+                              ),
+                            ),
                           ),
-                          NameAndNetwork(maxWidth: constraints.maxWidth),
-                          const HandRaise(), //top left
-                          const BRBTag(), //top left
-                          const AudioMuteStatus(), //top right
-                          context.read<PeerTrackNode>().peer.isLocal
-                              ? const LocalPeerMoreOption(isInsetTile: false)
-                              : const MoreOption(), //bottom right
+                          Positioned(
+                              top: widget.isFiveLayout ? 5 : null,
+                              bottom: widget.isFiveLayout ? null : 5,
+                              left: 5,
+                              child: NameAndNetwork(
+                                  maxWidth: MediaQuery.of(context)
+                                      .size
+                                      .width)), //bottom left
+                          Positioned(
+                              top: widget.isFiveLayout ? 40 : null,
+                              bottom: widget.isFiveLayout ? null : 40,
+                              left: 5,
+                              child: const HandRaise()), //top left
+                          Positioned(
+                              top: 5,
+                              left: 5,
+                              child: const BRBTag()), //top left
+                          Positioned(
+                              top: 5,
+                              right: 5,
+                              child: const AudioMuteStatus()), //top right
+
+                          //index == 0 then bottom left
+
+                          Positioned(
+                            bottom: 5,
+                            right: 5,
+                            child: context.read<PeerTrackNode>().peer.isLocal
+                                ? const LocalPeerMoreOption(
+                                    isInsetTile: false,
+                                  )
+                                : const MoreOption(),
+                          ), //bottom right
                           Semantics(
                             label: "fl_stats_on_tile",
                             child: RTCStatsView(
-                              isLocal:
-                                  context.read<PeerTrackNode>().peer.isLocal,
-                            ),
-                          ),
+                                isLocal:
+                                    context.read<PeerTrackNode>().peer.isLocal),
+                          )
                         ],
                       ),
                     ),
@@ -132,24 +159,15 @@ class _PeerTileState extends State<PeerTile> {
                 : Semantics(
                     label:
                         "fl_${context.read<PeerTrackNode>().peer.name}_screen_share_tile",
-                    child: LayoutBuilder(
-                      builder: (context, BoxConstraints constraints) {
-                        return Container(
-                          decoration: BoxDecoration(
+                    child: Container(
+                        decoration: BoxDecoration(
                             border: Border.all(
-                              color: HMSThemeColors.surfaceDim,
-                              width: 1.0,
-                            ),
+                                color: HMSThemeColors.surfaceDim, width: 1.0),
                             color: Colors.transparent,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          key: key,
-                          child: const ScreenshareTile(),
-                        );
-                      },
-                    ),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10))),
+                        key: key,
+                        child: const ScreenshareTile()),
                   );
           },
         ),

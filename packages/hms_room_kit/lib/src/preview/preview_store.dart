@@ -3,12 +3,12 @@ import 'dart:developer';
 
 ///Package imports
 import 'package:flutter/cupertino.dart';
-import 'package:hmssdk_flutter/hmssdk_flutter.dart';
 
 ///Project imports
 import 'package:hms_room_kit/hms_room_kit.dart';
-import 'package:hms_room_kit/src/layout_api/hms_room_layout.dart';
 import 'package:hms_room_kit/src/hmssdk_interactor.dart';
+import 'package:hms_room_kit/src/layout_api/hms_room_layout.dart';
+import 'package:hmssdk_flutter/hmssdk_flutter.dart';
 
 class PreviewStore extends ChangeNotifier
     implements HMSPreviewListener, HMSLogListener {
@@ -25,9 +25,9 @@ class PreviewStore extends ChangeNotifier
   bool isHLSLink = false;
   HMSRoom? room;
 
-  bool isVideoOn = false;
+  bool isVideoOn = true;
 
-  bool isAudioOn = false;
+  bool isAudioOn = true;
 
   bool isRecordingStarted = false;
 
@@ -54,6 +54,10 @@ class PreviewStore extends ChangeNotifier
   bool isNoiseCancellationAvailable = false;
 
   bool isNoiseCancellationEnabled = false;
+
+  /// Tracks whether the front camera is currently active in preview
+  /// Used to determine if video should be mirrored (front camera only)
+  bool isFrontCameraActive = true;
 
   @override
   void onHMSError({required HMSException error}) {
@@ -98,28 +102,30 @@ class PreviewStore extends ChangeNotifier
     getRoles();
     getCurrentAudioDevice();
     getAudioDevicesList();
-    toggleCameraMuteState();
-    toggleMicMuteState();
+
+    // Force enable camera and mic if they are muted
+    if (!isVideoOn) {
+      toggleCameraMuteState();
+    }
+    if (!isAudioOn) {
+      toggleMicMuteState();
+    }
+
     notifyListeners();
   }
 
-  void startPreview({
-    required String userName,
-    required String tokenData,
-  }) async {
+  void startPreview(
+      {required String userName, required String tokenData}) async {
     HMSConfig joinRoomConfig = HMSConfig(
-      authToken: tokenData,
-      userName: userName,
-      captureNetworkQualityInPreview: true,
-      // endPoint is only required by 100ms Team. Client developers should not use `endPoint`
-      //This is only for 100ms internal testing, endPoint can be safely removed from
-      //the HMSConfig for external usage
-      endPoint: Constant.initEndPoint,
-    );
+        authToken: tokenData,
+        userName: userName,
+        captureNetworkQualityInPreview: true,
+        // endPoint is only required by 100ms Team. Client developers should not use `endPoint`
+        //This is only for 100ms internal testing, endPoint can be safely removed from
+        //the HMSConfig for external usage
+        endPoint: Constant.initEndPoint);
     hmsSDKInteractor.startHMSLogger(
-      Constant.webRTCLogLevel,
-      Constant.sdkLogLevel,
-    );
+        Constant.webRTCLogLevel, Constant.sdkLogLevel);
     hmsSDKInteractor.addPreviewListener(this);
     hmsSDKInteractor.preview(config: joinRoomConfig);
   }
@@ -158,9 +164,7 @@ class PreviewStore extends ChangeNotifier
   @override
   void onRoomUpdate({required HMSRoom room, required HMSRoomUpdate update}) {
     this.room = room;
-    log(
-      "preview onRoomUpdate-> room: ${room.toString()} update: ${update.name} streamingState: ${room.hmshlsStreamingState?.state.name}",
-    );
+    log("preview onRoomUpdate-> room: ${room.toString()} update: ${update.name} streamingState: ${room.hmshlsStreamingState?.state.name}");
     switch (update) {
       case HMSRoomUpdate.browserRecordingStateUpdated:
         isRecordingStarted =
@@ -212,6 +216,9 @@ class PreviewStore extends ChangeNotifier
   void switchCamera() {
     if (isVideoOn) {
       hmsSDKInteractor.switchCamera();
+      // Toggle camera state for proper mirroring control
+      isFrontCameraActive = !isFrontCameraActive;
+      notifyListeners();
     }
   }
 
@@ -319,15 +326,13 @@ class PreviewStore extends ChangeNotifier
   }
 
   @override
-  void onAudioDeviceChanged({
-    HMSAudioDevice? currentAudioDevice,
-    List<HMSAudioDevice>? availableAudioDevice,
-  }) {
+  void onAudioDeviceChanged(
+      {HMSAudioDevice? currentAudioDevice,
+      List<HMSAudioDevice>? availableAudioDevice}) {
     if (currentAudioDevice != null &&
         currentAudioOutputDevice != currentAudioDevice) {
       Utilities.showToast(
-        "Output Device changed to ${currentAudioDevice.name}",
-      );
+          "Output Device changed to ${currentAudioDevice.name}");
       currentAudioOutputDevice = currentAudioDevice;
     }
 
@@ -339,12 +344,9 @@ class PreviewStore extends ChangeNotifier
   }
 
   @override
-  void onPeerListUpdate({
-    required List<HMSPeer> addedPeers,
-    required List<HMSPeer> removedPeers,
-  }) {
-    log(
-      "onPeerListUpdate -> addedPeers: $addedPeers removedPeers: $removedPeers",
-    );
+  void onPeerListUpdate(
+      {required List<HMSPeer> addedPeers,
+      required List<HMSPeer> removedPeers}) {
+    log("onPeerListUpdate -> addedPeers: $addedPeers removedPeers: $removedPeers");
   }
 }

@@ -190,7 +190,7 @@ class _MeetingHeaderState extends State<MeetingHeader> {
                                         Radius.circular(4),
                                       ),
                                       color: HMSThemeColors.backgroundDim
-                                          .withOpacity(0.64),
+                                          .withValues(alpha: 0.64),
                                     ),
                                     child: Row(
                                       mainAxisAlignment:

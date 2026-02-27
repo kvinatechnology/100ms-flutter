@@ -40,8 +40,8 @@ class PreviewHeader extends StatelessWidget {
                 end: Alignment.bottomCenter,
                 stops: const [0.45, 1],
                 colors: [
-                  HMSThemeColors.backgroundDim.withOpacity(1),
-                  HMSThemeColors.backgroundDim.withOpacity(0),
+                  HMSThemeColors.backgroundDim.withValues(alpha: 1),
+                  HMSThemeColors.backgroundDim.withValues(alpha: 0),
                 ],
               )
             : null,

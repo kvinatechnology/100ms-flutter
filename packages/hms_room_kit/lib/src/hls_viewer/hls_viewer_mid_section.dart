@@ -43,8 +43,8 @@ class HLSViewerMidSection extends StatelessWidget {
                     },
                     child: CircleAvatar(
                       radius: 32,
-                      backgroundColor: HMSThemeColors.backgroundDim.withOpacity(
-                        0.64,
+                      backgroundColor: HMSThemeColors.backgroundDim.withValues(
+                        alpha: 0.64,
                       ),
                       child: Center(
                         child: Container(

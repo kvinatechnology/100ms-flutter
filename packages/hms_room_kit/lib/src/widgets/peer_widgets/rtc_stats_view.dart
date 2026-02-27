@@ -47,7 +47,7 @@ class Stats extends StatelessWidget {
                 padding: const EdgeInsets.all(5),
                 margin: const EdgeInsets.all(2),
                 decoration: BoxDecoration(
-                  color: Colors.black38.withOpacity(0.3),
+                  color: Colors.black38.withValues(alpha: 0.3),
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
                 ),
                 child: ListView(
@@ -88,7 +88,7 @@ class Stats extends StatelessWidget {
                 padding: const EdgeInsets.all(5),
                 margin: const EdgeInsets.all(2),
                 decoration: BoxDecoration(
-                  color: Colors.black38.withOpacity(0.3),
+                  color: Colors.black38.withValues(alpha: 0.3),
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
                 ),
                 child: Column(

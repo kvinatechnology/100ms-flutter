@@ -341,10 +341,10 @@ class _ParticipantsViewAllBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (didPop, result) {
         resetData();
-        return true;
       },
       child: SafeArea(
         child: FractionallySizedBox(

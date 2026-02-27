@@ -16,7 +16,6 @@ import 'package:hms_room_kit/src/meeting/meeting_navigation_visibility_controlle
 import 'package:hms_room_kit/src/meeting/meeting_store.dart';
 import 'package:hms_room_kit/src/model/peer_track_node.dart';
 import 'package:hms_room_kit/src/widgets/meeting_modes/custom_one_to_one_grid.dart';
-import 'package:hms_room_kit/src/widgets/meeting_modes/one_to_one_mode.dart';
 
 ///[MeetingGridComponent] is a component that is used to show the video grid
 class MeetingGridComponent extends StatelessWidget {
@@ -82,30 +81,10 @@ class MeetingGridComponent extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () =>
                           visibilityController?.toggleControlsVisibility(),
-                      child: (modeData.item1 ==
-                                  MeetingMode.activeSpeakerWithInset &&
-                              (context
-                                          .read<MeetingStore>()
-                                          .localPeer
-                                          ?.audioTrack !=
-                                      null ||
-                                  context
-                                          .read<MeetingStore>()
-                                          .localPeer
-                                          ?.videoTrack !=
-                                      null))
-                          ? OneToOneMode(
-                              ///This is done to keep the inset tile
-                              ///at correct position when controls are hidden
-                              bottomMargin: showControls ? 250 : 130,
-                              peerTracks: data.item1,
-                              screenShareCount: data.item4,
-                              context: context,
-                            )
-                          : CustomOneToOneGrid(
-                              isLocalInsetPresent: false,
-                              peerTracks: data.item1,
-                            ),
+                      child: CustomOneToOneGrid(
+                        isLocalInsetPresent: false,
+                        peerTracks: data.item1,
+                      ),
                     ),
                   ),
                 );

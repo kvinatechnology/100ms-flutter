@@ -77,10 +77,17 @@ class _HLSViewerPageState extends State<HLSViewerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        bool ans = await UtilityComponents.onBackPressed(context) ?? false;
-        return ans;
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, Object? result) async {
+        if (didPop) {
+          return;
+        }
+        final bool shouldPop =
+            await UtilityComponents.onBackPressed(context) ?? false;
+        if (context.mounted && shouldPop) {
+          Navigator.of(context).pop();
+        }
       },
       child: Selector<MeetingStore, Tuple4<bool, HMSException?, bool, bool>>(
         selector: (_, meetingStore) => Tuple4(

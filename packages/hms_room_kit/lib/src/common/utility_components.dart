@@ -292,7 +292,7 @@ class UtilityComponents {
     );
   }
 
-  static void showonExceptionDialog(event, BuildContext context) {
+  static void showonExceptionDialog(dynamic event, BuildContext context) {
     event = event as HMSException;
     var message =
         "${event.message} ${event.id ?? ""} ${event.code?.errorCode ?? ""} ${event.description} ${event.action} ${event.params ?? "".toString()}";
@@ -322,7 +322,7 @@ class UtilityComponents {
   }
 
   static Future<String> showInputDialog({
-    context,
+    required BuildContext context,
     String placeholder = "",
     String prefilledValue = "",
   }) async {
@@ -798,7 +798,7 @@ class UtilityComponents {
   }
 
   static Future<Map<String, dynamic>> showRTMPInputDialog({
-    context,
+    required BuildContext context,
     String placeholder = "",
     String prefilledValue = "",
     bool isRecordingEnabled = false,
@@ -1164,7 +1164,7 @@ class UtilityComponents {
   static Widget showReconnectingDialog(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height,
-      color: HMSThemeColors.backgroundDefault.withOpacity(0.5),
+      color: HMSThemeColors.backgroundDefault.withValues(alpha: 0.5),
       child: const HMSReconnectionToast(),
     );
   }
@@ -1177,7 +1177,7 @@ class UtilityComponents {
   ) {
     return Container(
       height: MediaQuery.of(context).size.height,
-      color: HMSThemeColors.backgroundDefault.withOpacity(0.5),
+      color: HMSThemeColors.backgroundDefault.withValues(alpha: 0.5),
       child: HMSDisconnectedToast(
         errorDescription:
             "CODE: ${exception.code?.errorCode}, ${exception.description}",
@@ -1317,7 +1317,7 @@ class UtilityComponents {
   }
 
   static Future<String> showNameChangeDialog({
-    context,
+    required BuildContext context,
     String placeholder = "",
     String prefilledValue = "",
   }) async {

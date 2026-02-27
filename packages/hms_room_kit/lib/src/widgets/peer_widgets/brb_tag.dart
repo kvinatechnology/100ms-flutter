@@ -17,27 +17,22 @@ class BRBTag extends StatelessWidget {
     return Selector<PeerTrackNode, String?>(
       builder: (_, metadata, __) {
         return metadata?.contains("\"isBRBOn\":true") ?? false
-            ? Positioned(
-                top: 5.0,
-                left: 5,
-                child: Semantics(
-                  label:
-                      "fl_${context.read<PeerTrackNode>().peer.name}_brb_tag",
-                  child: Container(
-                    height: 32,
-                    width: 32,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: HMSThemeColors.secondaryDim,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: SvgPicture.asset(
-                        "packages/hms_room_kit/lib/src/assets/icons/brb.svg",
-                        width: 19.25,
-                        height: 11,
-                        semanticsLabel: "brb_label",
-                      ),
+            ? Semantics(
+                label: "fl_${context.read<PeerTrackNode>().peer.name}_brb_tag",
+                child: Container(
+                  height: 32,
+                  width: 32,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: HMSThemeColors.secondaryDim,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: SvgPicture.asset(
+                      "packages/hms_room_kit/lib/src/assets/icons/brb.svg",
+                      width: 19.25,
+                      height: 11,
+                      semanticsLabel: "brb_label",
                     ),
                   ),
                 ),

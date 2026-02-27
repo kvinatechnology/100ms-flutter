@@ -110,10 +110,12 @@ class _ChatBottomSheetState extends State<ChatBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        context.read<MeetingStore>().setNewMessageFalse();
-        return true;
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (bool didPop, dynamic result) {
+        if (didPop) {
+          context.read<MeetingStore>().setNewMessageFalse();
+        }
       },
       child: SafeArea(
         child: Padding(

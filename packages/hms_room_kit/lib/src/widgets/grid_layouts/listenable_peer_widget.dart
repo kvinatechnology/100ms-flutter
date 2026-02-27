@@ -3,11 +3,11 @@ library;
 
 import 'package:flutter/cupertino.dart';
 import 'package:hms_room_kit/src/meeting/meeting_store.dart';
+import 'package:hms_room_kit/src/widgets/common_widgets/speaking_indicator_tile.dart';
 import 'package:provider/provider.dart';
 
 ///Project imports
 import 'package:hms_room_kit/src/model/peer_track_node.dart';
-import 'package:hms_room_kit/src/widgets/common_widgets/peer_tile.dart';
 import 'package:hmssdk_flutter/hmssdk_flutter.dart';
 
 ///This widget is used to render the peer tile
@@ -15,12 +15,13 @@ class ListenablePeerWidget extends StatelessWidget {
   final int index;
   final List<PeerTrackNode> peerTracks;
   final ScaleType scaleType;
-
+  final bool alignFiveLayout;
   const ListenablePeerWidget({
     super.key,
     required this.index,
     required this.peerTracks,
     this.scaleType = ScaleType.SCALE_ASPECT_FILL,
+    this.alignFiveLayout = false,
   });
 
   @override
@@ -42,10 +43,12 @@ class ListenablePeerWidget extends StatelessWidget {
           return meetingStore.viewControllers[index % 6];
         },
         builder: (_, viewController, __) {
-          return PeerTile(
+          return SpeakingIndicatorTile(
             videoViewController: viewController,
             key: ValueKey("${peerTracks[index].uid}audio_view"),
             scaleType: scaleType,
+            index: index,
+            isFiveLayout: alignFiveLayout,
           );
         },
       ),

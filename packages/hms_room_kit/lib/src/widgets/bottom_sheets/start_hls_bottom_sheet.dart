@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 
 class StartHLSBottomSheet extends StatefulWidget {
   @override
-  const StartHLSBottomSheet({key}) : super(key: key);
+  const StartHLSBottomSheet({super.key});
 
   @override
   State<StartHLSBottomSheet> createState() => _StartHLSBottomSheetState();
