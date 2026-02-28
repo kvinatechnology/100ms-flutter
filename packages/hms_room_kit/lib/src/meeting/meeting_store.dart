@@ -1065,8 +1065,8 @@ class MeetingStore extends ChangeNotifier
           backgroundColor: Colors.black);
     } else if (Platform.isAndroid) {
       HMSAndroidPIPController.setup();
-      // Enable auto-enter PIP for Android 12+ when app is minimized
-      HMSAndroidPIPController.start(autoEnterPip: true, aspectRatio: [9, 16]);
+      // // Enable auto-enter PIP for Android 12+ when app is minimized
+      // HMSAndroidPIPController.start(autoEnterPip: true, aspectRatio: [9, 16]);
     }
   }
 
