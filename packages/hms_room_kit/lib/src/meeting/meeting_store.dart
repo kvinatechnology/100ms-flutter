@@ -1065,8 +1065,6 @@ class MeetingStore extends ChangeNotifier
           backgroundColor: Colors.black);
     } else if (Platform.isAndroid) {
       HMSAndroidPIPController.setup();
-      // // Enable auto-enter PIP for Android 12+ when app is minimized
-      // HMSAndroidPIPController.start(autoEnterPip: true, aspectRatio: [9, 16]);
     }
   }
 
@@ -2192,7 +2190,7 @@ class MeetingStore extends ChangeNotifier
   ///If the peer is in spotlight then it is placed on the first index
   ///If video is ON then the peer is placed on the first index
   ///If video is OFF then the peer is placed on the last index
-  void rearrangeTile(PeerTrackNode peerTrackNode, int index) {
+  rearrangeTile(PeerTrackNode peerTrackNode, int index) {
     if (peerTrackNode.track!.isMute) {
       if (peerTracks.length - 1 > index &&
           (peerTracks[index + 1].track?.isMute ?? true)) {
@@ -3105,7 +3103,7 @@ class MeetingStore extends ChangeNotifier
         break;
       case HMSActionResultListenerMethod.hlsStreamingStarted:
         isHLSStarting = false;
-        //TODO: Add toast
+        //TODO:
         //toasts.add(HMSToastModel(hmsException, hmsToastType: HMSToastsType.streamingErrorToast));
         notifyListeners();
         break;
@@ -3177,7 +3175,6 @@ class MeetingStore extends ChangeNotifier
       }
     } else if (state == AppLifecycleState.paused) {
       HMSLocalPeer? localPeer = await getLocalPeer();
-
       if (localPeer != null &&
           !(localPeer.videoTrack?.isMute ?? true) &&
           !isPipActive) {
@@ -3185,7 +3182,6 @@ class MeetingStore extends ChangeNotifier
         lastVideoStatus = true;
       }
 
-      // Check PIP status first — auto PIP may have already activated
       if (Platform.isAndroid) {
         isPipActive = await HMSAndroidPIPController.isActive();
         notifyListeners();
@@ -3221,8 +3217,10 @@ class MeetingStore extends ChangeNotifier
       }
       notifyListeners();
     } else if (state == AppLifecycleState.detached) {
-      // App is being killed — leave the meeting so other users don't see a ghost peer
-      leave();
+      if (Platform.isAndroid && !isPipActive) {
+        isPipActive = await HMSAndroidPIPController.isActive();
+      }
+      notifyListeners();
     }
   }
 }
