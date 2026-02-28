@@ -38,7 +38,7 @@ class HMSPipAction {
                     )
                 }
                 "setup_pip" -> {
-                    setupPIP(call, result)
+                    setupPIP(call, result, activity)
                 }
                 "destroy_pip" -> {
                     destroyPIP(call, result, activity)
@@ -52,6 +52,7 @@ class HMSPipAction {
         private fun setupPIP(
             call: MethodCall,
             result: Result,
+            activity: Activity,
         ) {
             isPIPEnabled = true
             call.argument<List<Int>?>("ratio")?.let {
@@ -60,6 +61,13 @@ class HMSPipAction {
             call.argument<Boolean?>("auto_enter_pip")?.let {
                 pipAutoEnterEnabled = it
             }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                var params = PictureInPictureParams.Builder().setAspectRatio(Rational(pipAspectRatio[0], pipAspectRatio[1]))
+                params = params.setAutoEnterEnabled(pipAutoEnterEnabled)
+                activity.setPictureInPictureParams(params.build())
+            }
+
             result.success(null)
         }
 

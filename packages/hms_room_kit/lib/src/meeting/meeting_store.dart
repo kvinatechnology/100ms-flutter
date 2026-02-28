@@ -3174,14 +3174,8 @@ class MeetingStore extends ChangeNotifier
         lastVideoStatus = false;
       }
     } else if (state == AppLifecycleState.paused) {
-      // Start PIP mode when the user minimizes the app (presses home button)
-      if (Platform.isAndroid) {
-        bool isPipAvailable = await HMSAndroidPIPController.isAvailable();
-        if (isPipAvailable && !isPipActive) {
-          isPipActive = await HMSAndroidPIPController.start();
-          notifyListeners();
-        }
-      } else if (Platform.isIOS) {
+      // For iOS, assume PIP activated natively on background if enabled
+      if (Platform.isIOS) {
         isPipActive = true;
         notifyListeners();
       }
@@ -3192,6 +3186,11 @@ class MeetingStore extends ChangeNotifier
           !isPipActive) {
         toggleCameraMuteState();
         lastVideoStatus = true;
+      }
+
+      if (Platform.isAndroid) {
+        isPipActive = await HMSAndroidPIPController.isActive();
+        notifyListeners();
       }
 
       if (Platform.isIOS) {
