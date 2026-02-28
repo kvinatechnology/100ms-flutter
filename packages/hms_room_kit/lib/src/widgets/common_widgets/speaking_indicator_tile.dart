@@ -75,6 +75,7 @@ class _SpeakingIndicatorTileState extends State<SpeakingIndicatorTile>
           animation: _glowAnimation,
           builder: (context, child) {
             return Container(
+              margin: EdgeInsets.all(4),
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),

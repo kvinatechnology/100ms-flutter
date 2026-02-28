@@ -1065,6 +1065,8 @@ class MeetingStore extends ChangeNotifier
           backgroundColor: Colors.black);
     } else if (Platform.isAndroid) {
       HMSAndroidPIPController.setup();
+      // Enable auto-enter PIP for Android 12+ when app is minimized
+      HMSAndroidPIPController.start(autoEnterPip: true, aspectRatio: [9, 16]);
     }
   }
 
@@ -3175,16 +3177,18 @@ class MeetingStore extends ChangeNotifier
       }
     } else if (state == AppLifecycleState.paused) {
       HMSLocalPeer? localPeer = await getLocalPeer();
+
+      // Check PIP status first — auto PIP may have already activated
+      if (Platform.isAndroid) {
+        isPipActive = await HMSAndroidPIPController.isActive();
+        notifyListeners();
+      }
+
       if (localPeer != null &&
           !(localPeer.videoTrack?.isMute ?? true) &&
           !isPipActive) {
         toggleCameraMuteState();
         lastVideoStatus = true;
-      }
-
-      if (Platform.isAndroid) {
-        isPipActive = await HMSAndroidPIPController.isActive();
-        notifyListeners();
       }
 
       if (Platform.isIOS) {
