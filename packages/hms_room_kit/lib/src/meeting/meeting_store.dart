@@ -3178,17 +3178,17 @@ class MeetingStore extends ChangeNotifier
     } else if (state == AppLifecycleState.paused) {
       HMSLocalPeer? localPeer = await getLocalPeer();
 
-      // Check PIP status first — auto PIP may have already activated
-      if (Platform.isAndroid) {
-        isPipActive = await HMSAndroidPIPController.isActive();
-        notifyListeners();
-      }
-
       if (localPeer != null &&
           !(localPeer.videoTrack?.isMute ?? true) &&
           !isPipActive) {
         toggleCameraMuteState();
         lastVideoStatus = true;
+      }
+
+      // Check PIP status first — auto PIP may have already activated
+      if (Platform.isAndroid) {
+        isPipActive = await HMSAndroidPIPController.isActive();
+        notifyListeners();
       }
 
       if (Platform.isIOS) {
