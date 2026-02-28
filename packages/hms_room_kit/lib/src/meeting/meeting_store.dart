@@ -1060,7 +1060,7 @@ class MeetingStore extends ChangeNotifier
         HMSRoomLayout.roleLayoutData?.screens?.conferencing?.defaultConf !=
             null) {
       HMSIOSPIPController.setup(
-          autoEnterPip: true,
+          autoEnterPip: false,
           aspectRatio: [9, 16],
           backgroundColor: Colors.black);
     } else if (Platform.isAndroid) {
@@ -1796,7 +1796,7 @@ class MeetingStore extends ChangeNotifier
               HMSIOSPIPController.destroy();
             } else {
               HMSIOSPIPController.setup(
-                  autoEnterPip: true,
+                  autoEnterPip: false,
                   aspectRatio: [9, 16],
                   backgroundColor: Colors.black);
             }
@@ -3174,17 +3174,24 @@ class MeetingStore extends ChangeNotifier
         lastVideoStatus = false;
       }
     } else if (state == AppLifecycleState.paused) {
+      // Start PIP mode when the user minimizes the app (presses home button)
+      if (Platform.isAndroid) {
+        bool isPipAvailable = await HMSAndroidPIPController.isAvailable();
+        if (isPipAvailable && !isPipActive) {
+          isPipActive = await HMSAndroidPIPController.start();
+          notifyListeners();
+        }
+      } else if (Platform.isIOS) {
+        isPipActive = true;
+        notifyListeners();
+      }
+
       HMSLocalPeer? localPeer = await getLocalPeer();
       if (localPeer != null &&
           !(localPeer.videoTrack?.isMute ?? true) &&
           !isPipActive) {
         toggleCameraMuteState();
         lastVideoStatus = true;
-      }
-
-      if (Platform.isAndroid) {
-        isPipActive = await HMSAndroidPIPController.isActive();
-        notifyListeners();
       }
 
       if (Platform.isIOS) {
